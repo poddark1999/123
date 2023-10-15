@@ -25,8 +25,8 @@ class Transaction(Model):
         :type comment: str
         '''
         ## TO DO
-        ## Create regex to parse possible date formats
-        ## Set amount, date, comment attributes as a PRIVATE attributes
+        ## Create regex to parse possible date formats (optional)
+        ## ## private attributes: user_uuid, amount, date, comment attributes as a PRIVATE attributes
         ## Use constructor method from parent class
         ## (modification shouldn't be possible by directly accessing their corresponding values)
         pass
@@ -54,16 +54,26 @@ class Transaction(Model):
 
 class Allocation(Transaction):
 
-    def __init__(self, bucket):
+    '''
+    The Allocation class will allow us to
+    allocate money to the different buckets
+    '''
+
+    def __init__(self, bucket_uuid):
         '''
         Constructor
-        :param bucket: bucket object to which the amount is allocated
+        :param bucket: uuid of the bucket to which the amount is allocated
         Uses the constructor method of the parent class Transaction
         '''
         pass
 
 
 class RecurringExpense(Transaction):
+
+    '''
+    The RecurringExpense will allow us to enter recurring expenses
+    and include them in our budgetary predictions.
+    '''
 
     def __init__(self, frequency):
         '''
@@ -72,3 +82,6 @@ class RecurringExpense(Transaction):
         Uses the constructor method of the parent class Transaction
         '''
         pass
+
+if __name__ == '__main__':
+    pass

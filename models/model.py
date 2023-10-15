@@ -17,3 +17,6 @@ class Model:
         :return: UUID of a given model
         '''
         pass
+
+if __name__ == '__main__':
+    pass
