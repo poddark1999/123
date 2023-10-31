@@ -1,4 +1,5 @@
 from models.transaction import Transaction
+from model_controller import ModelController
 
 
 class TransactionController(ModelController):
@@ -7,13 +8,8 @@ class TransactionController(ModelController):
     '''
 
     @staticmethod
-    def create_transaction(type_,
-                           amount,
-                           date,
-                           user_uuid,
-                           description=None,
-                           recurrence=None,
-                           end_date=None):
+    def create_transaction(type_, amount, date, user_uuid,
+                           description=None, recurrence=None, end_date=None):
         """
         Create a new transaction and save it.
 
