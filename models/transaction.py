@@ -1,106 +1,67 @@
 from datetime import datetime
-import os
-import re
 from model import Model
+
 
 class Transaction(Model):
     '''
-    Class to represent all possible types of transactions
-    that will take place on the platform
+    Class to represent all possible types of transactions.
     '''
 
-    def __init__(self, amount, user_uuid, date=datetime.now(), comment=None):
-        '''
-        Constructor that assigns a transaction to a given user
-
-        Params
-        ------
-            :param amount: a positive amount for a given transaction
-            :type amount: float
-            :param user_uuid: uuid of the user
-            :type user_uuid: str
-            :param date: a date entered in one of several formats
-            (DD/MM/YYYY, DD.MM.YYYY, DD/MM/YY, DD.MM.YY), will be turned into datetime object (will be parsed with regular expression)
-            Default value: datetime.now()
-            :type date: datetime object
-            :param comment: facultative comment that can be entered along with transaction,
-            Default value: None
-            :type comment: str
-        '''
-        ## TO DO
-        ## Create regex to parse possible date formats (optional)
-        ## ## private attributes: user_uuid, amount, date, comment attributes as a PRIVATE attributes
-        ## Use constructor method from parent class
-        ## (modification shouldn't be possible by directly accessing their corresponding values)
-        pass
-
-    @property
-
-    def date(self, type="date"):
-        '''
-        Getter method to get the date of a transaction
-
-        Params
-        ------
-
-            :param type: string which defines the type of the object to be returned by this function
-            Possible values: date (for datetime object) and str (for string)
-            Default value: date
-            :type type: str
-
-        Return
-        ------
-            :return: value containing the date
-        '''
-
-    @property
-
-    def amount(self):
-        '''
-        Getter method to get the amount value of a transaction
-
-        Return
-        ------
-            :return: float type value containing amount of a given transaction
-        '''
-        pass
-
-class Allocation(Transaction):
-
-    '''
-    The Allocation class will allow us to
-    allocate money to the different buckets
-    '''
-
-    def __init__(self, bucket_uuid):
+    def __init__(self, amount, user_uuid, date=datetime.now(), note=None):
         '''
         Constructor
-        Uses the constructor method of the parent class Transaction
-        Params
-        ------
-        :param bucket: uuid of the bucket to which the amount is allocated
+        :param amount: amount of the transaction.
+        :param user_uuid: unique identifier of the user associated with this transaction.
+        :param date: date of the transaction (default is the current date).
+        :param note: any additional notes or comments about this transaction.
         '''
         pass
 
 
 class RecurringExpense(Transaction):
-
     '''
-    The RecurringExpense will allow us to enter recurring expenses
-    and include them in our budgetary predictions.
+    Represents recurring expenses.
     '''
 
-    def __init__(self, frequency):
+    def __init__(self, frequency, start_date=datetime.now(), expiry_date=None, is_paused=False):
         '''
         Constructor
-        Uses the constructor method of the parent class Transaction
-
-        Params
-        ------
-            :param frequency: frequency at which the expense occurs (can be daily/weekly/monthly/yearly)
-            :type frequency: str
+        :param frequency: frequency of the expense (daily/weekly/monthly/yearly).
+        :param start_date: starting date of the recurring expense.
+        :param expiry_date: end date of the recurring expense. Can be None if it's indefinite.
+        :param is_paused: boolean to indicate if the recurring expense is currently paused.
         '''
         pass
+
+
+class Allocation(Transaction):
+    '''
+    Represents money allocations.
+    '''
+
+    def __init__(self, target_uuid):
+        '''
+        Constructor
+        :param target_uuid: unique identifier of the bucket where the money will be allocated.
+        '''
+        pass
+
+
+class Income(Transaction):
+    '''
+    Represents incomes.
+    '''
+
+    def __init__(self, source, frequency="One-Time", start_date=datetime.now(), end_date=None):
+        '''
+        Constructor
+        :param source: source of the income (e.g., "Salary", "Freelance").
+        :param frequency: frequency of the income (default is "One-Time").
+        :param start_date: date when the income starts (relevant for recurring incomes).
+        :param end_date: date when the income ends (can be None if it's indefinite).
+        '''
+        pass
+
 
 if __name__ == '__main__':
     pass
