@@ -1,3 +1,4 @@
+from models.model import Model
 
 class ModelController:
     """

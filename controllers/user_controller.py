@@ -1,7 +1,8 @@
 from models.user import User, is_strong
+from model_controller import ModelController
 
 
-class UserController:
+class UserController(ModelController):
     '''
     Controller for the User model.
     Manages operations related to the User.
