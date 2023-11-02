@@ -56,7 +56,7 @@ class BucketController(ModelController):
             :param bucket_uuid: uuid of the bucket to be updated
             :type bucket_uuid: str
             :param kwargs: a dictionary of attributes to be updated with their new values
-
+            :type kwargs: dict
         Return
         ------
             :return: Updated bucket instance or relevant error message.
