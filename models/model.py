@@ -1,6 +1,4 @@
 from uuid import uuid4
-import random
-import string
 
 class Model:
 
@@ -34,5 +32,3 @@ if __name__ == '__main__':
         pass  # This is expected if _uuid is truly private
 
     print("All tests passed for Model class!")
-
-    print(Model.uuid)
