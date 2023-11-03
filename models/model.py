@@ -1,4 +1,6 @@
 from uuid import uuid4
+import random
+import string
 
 class Model:
 
@@ -7,18 +9,18 @@ class Model:
         Constructor
         instantiates a model and creates a random UUID (uuid4()) to identify it as a private attribute
         '''
-        pass
-
+        self.__uuid = uuid4()
+    
     @property
-
     def uuid(self):
         '''
         Getter method to get the UUID of a transaction
         :return: UUID of a given model
         '''
-        pass
+        return str(self.__uuid)
 
 if __name__ == '__main__':
+
     # Test Case 1: Model instantiation and UUID check
     test_model = Model()
     assert isinstance(test_model, Model), "Error: Unable to instantiate Model class."
@@ -26,9 +28,11 @@ if __name__ == '__main__':
 
     # Test Case 2: UUID privacy check
     try:
-        test_model._uuid = "TryingDirectAccess"
+        test_model.uuid = "TryingDirectAccess"
         assert False, "Error: Able to directly modify the private '_uuid' attribute. Ensure that it's private and not accessible."
     except AttributeError:
         pass  # This is expected if _uuid is truly private
 
     print("All tests passed for Model class!")
+
+    print(Model.uuid)
