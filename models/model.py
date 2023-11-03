@@ -1,6 +1,4 @@
 from uuid import uuid4
-import random
-import string
 
 class Model:
 
@@ -10,7 +8,7 @@ class Model:
         instantiates a model and creates a random UUID (uuid4()) to identify it as a private attribute
         '''
         self.__uuid = uuid4()
-    
+
     @property
     def uuid(self):
         '''

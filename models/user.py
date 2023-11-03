@@ -78,7 +78,6 @@ class User(Model):
         '''
         pass
 
-
 if __name__ == '__main__':
     # Tests for is_strong function
     test_cases = [
@@ -118,7 +117,7 @@ if __name__ == '__main__':
 
     # Test Privacy
     try:
-        user._password
+        user.password
     except AttributeError:
         print("Password attribute privacy test passed!")
     else:
