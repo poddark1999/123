@@ -1,4 +1,6 @@
+from tkinter import N
 from model import Model
+import re
 
 def is_strong(password):
     '''
@@ -20,7 +22,15 @@ def is_strong(password):
         :return: Is the password strong enough
         :rtype: bool
     '''
-    pass
+    if len(password) < 8 or \
+        len(password) > 30 or \
+        not re.search(r'[A-Z]', password) or \
+        not re.search(r'[a-z]', password) or \
+        not re.search(r'[!@#$%^&*()_+{}[\]:;<>,.?~\\-]', password) or \
+        not re.search(r'\d', password):
+        return False
+
+    return True
 
 
 class User(Model):
@@ -44,7 +54,11 @@ class User(Model):
             :param password: strong password (strength can be checked with is_strong)
 		    :type password: str
         '''
-        pass
+        self.first_name = first_name
+        self.last_name = last_name
+        self.username = username
+        self.__password = password
+
 
     def check_password(self, password):
         '''
@@ -60,7 +74,7 @@ class User(Model):
             :return: True if the password matches, otherwise False
             :rtype: bool
         '''
-        pass
+        return  self.__password == password
 
     def change_password(self, old_password, new_password):
         '''
@@ -76,7 +90,13 @@ class User(Model):
             :param new_password: new strong password
             :type new_password: str
         '''
-        pass
+        if not self.check_password(old_password):
+            raise ValueError("The provided old password is incorrect.")
+
+        if not is_strong(new_password):
+            raise ValueError("The new password is not strong enough.")
+        
+        self.__password = new_password
 
 if __name__ == '__main__':
     # Tests for is_strong function
@@ -84,12 +104,7 @@ if __name__ == '__main__':
         ("Password123!", True,
          "A strong password with uppercase, lowercase, number, and special character"
          ),
-        ("password123!", True,
-         "A strong password with lowercase, number, and special character but no uppercase"
-         ),
-        ("PASSWORD123!", True,
-         "A strong password with uppercase, number, and special character but no lowercase"
-         ), ("Password123", False, "Missing special character"),
+        ("Password123", False, "Missing special character"),
         ("Password!", False, "Missing number"),
         ("password123!", False, "Missing uppercase letter"),
         ("PASSWORD123!", False, "Missing lowercase letter"),
@@ -105,7 +120,7 @@ if __name__ == '__main__':
     # Test User Creation
     user = User("John", "Doe", "johndoe", "Password123!")
     print("User creation test passed!")
-
+    
     # Test Attribute Types
     assert isinstance(user.first_name,
                       str), "first_name attribute type test failed!"
@@ -117,7 +132,7 @@ if __name__ == '__main__':
 
     # Test Privacy
     try:
-        user.password
+        user.__password
     except AttributeError:
         print("Password attribute privacy test passed!")
     else:
