@@ -170,9 +170,9 @@ if __name__ == '__main__':
     ## Test Model Inheritance
     try:
         user.uuid
-        print("User class correctly inherits from Model!")
+        print("User class correctly inherits attributes from Model!")
     except AttributeError:
-        assert False, "User class does not inherit from Model!"
+        assert False, "User class does not inherit attributes from Model!"
 
     print("All tests passed!")
 
