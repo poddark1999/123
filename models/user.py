@@ -58,7 +58,6 @@ class User(Model):
         self.username = username
         self.__password = password
 
-
     def check_password(self, password):
         '''
         Check if the provided password matches the stored one.
@@ -94,7 +93,7 @@ class User(Model):
 
         if not is_strong(new_password):
             raise ValueError("The new password is not strong enough.")
-        
+
         self.__password = new_password
 
 if __name__ == '__main__':
@@ -119,7 +118,7 @@ if __name__ == '__main__':
     # Test User Creation
     user = User("John", "Doe", "johndoe", "Password123!")
     print("User creation test passed!")
-    
+
     # Test Attribute Types
     assert isinstance(user.first_name,
                       str), "first_name attribute type test failed!"
@@ -167,3 +166,13 @@ if __name__ == '__main__':
     assert user.check_password(
         "NewPassword123!") == True, "Password change test failed!"
     print("Password change test passed!")
+
+    ## Test Model Inheritance
+    try:
+        user.uuid
+        print("User class correctly inherits from Model!")
+    except AttributeError:
+        assert False, "User class does not inherit from Model!"
+
+    print("All tests passed!")
+

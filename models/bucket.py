@@ -97,31 +97,32 @@ if __name__ == '__main__':
     test_bucket = Bucket(name="Test Bucket", goal=100, user_uuid="sample_uuid", deadline=datetime(2023, 12, 31))
     assert isinstance(test_bucket, Bucket), "Error: Unable to instantiate Bucket class."
     assert isinstance(test_bucket.uuid, str) and len(test_bucket.uuid) == 36, "Error: UUID not generated correctly. Ensure it's a string of 36 characters."
-    print("Test Case 1 passed!")
+    print("Bucket instantiation test passed!")
 
     # Test Case 2: creation_date privacy check
     try:
-        test_value = test_bucket._creation_date
+        test_value = test_bucket.__creation_date
         assert False, "Error: Able to directly access the private '_creation_date' attribute. Ensure that it's private and not accessible."
     except AttributeError:
         pass  # Expected outcome
-    print("Test Case 2 passed!")
+    print("Privacy test passed for creation_date!")
 
     # Test Case 3: is_completed privacy check
     try:
-        test_value = test_bucket._is_completed
+        test_value = test_bucket.__is_completed
         assert False, "Error: Able to directly access the private '_is_completed' attribute. Ensure that it's private and not accessible."
     except AttributeError:
         pass  # Expected outcome
-    print("Test Case 3 passed!")
+    print("Test Case privacy is_completed passed!")
 
     # Test Case 4: current_amount privacy check
     try:
-        test_value = test_bucket._current_amount
+        test_value = test_bucket.__current_amount
         assert False, "Error: Able to directly access the private '_current_amount' attribute. Ensure that it's private and not accessible."
     except AttributeError:
         pass  # Expected outcome
-    print("Test Case 4 passed!")
+    print("Test Case privacy current_amount passed!")
+    print("Privacy tests passed!"")
 
     # Test Case 5: creation_date type check & getter check
     assert isinstance(test_bucket.creation_date, datetime), "Error: 'creation_date' should be of type datetime when accessed without specifying type."
@@ -141,7 +142,7 @@ if __name__ == '__main__':
     assert isinstance(test_bucket.user_uuid, str), "Error: 'user_uuid' attribute should be of type string."
     assert isinstance(test_bucket.deadline, datetime), "Error: 'deadline' attribute should be of type datetime."
     assert isinstance(test_bucket.comment, (str, type(None))), "Error: 'comment' attribute should be of type string or None."
-    print("Test Case 7 passed!")
+    print("Type checks passed!")
 
     print("All tests passed for Bucket class!")
 

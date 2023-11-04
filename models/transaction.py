@@ -75,6 +75,13 @@ if __name__ == '__main__':
     a = Allocation(100, user_uuid, user_uuid)
     i = Income(100, user_uuid, "Salary")
 
+    # Test inheritance of Transaction class from Model class
+    try:
+        t.uuid
+        print("Transaction class correctly inherits attributes from Model!")
+    except AttributeError:
+        assert False, "Transaction class does not inherit from Model!"
+
     assert isinstance(t,
                       Model), "Transaction class does not inherit from Model!"
     assert isinstance(
