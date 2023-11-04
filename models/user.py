@@ -1,4 +1,3 @@
-from tkinter import N
 from model import Model
 import re
 
