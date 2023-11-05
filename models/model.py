@@ -1,5 +1,4 @@
 from uuid import uuid4
-
 class Model:
 
     def __init__(self):
@@ -8,7 +7,7 @@ class Model:
         instantiates a model and creates a random UUID (uuid4()) to identify it as a private attribute
         '''
         self.__uuid = uuid4()
-
+    
     @property
     def uuid(self):
         '''
@@ -32,5 +31,3 @@ if __name__ == '__main__':
         pass  # This is expected if _uuid is truly private
 
     print("All tests passed for Model class!")
-
-    print(Model.uuid)
