@@ -1,0 +1,29 @@
+QWidget {
+    background-color: #f0f0f0;
+    color: #5C4033;
+    font-family: "Montserrat", sans-serif;
+}
+
+QPushButton {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: "Montserrat", sans-serif;
+}
+
+QPushButton:hover {
+    background-color: #005f5f;
+}
+
+QLineEdit {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Montserrat", sans-serif;
+}
+QLabel {
+    color: #5C4033;
+    font-family: "Montserrat", sans-serif;
+}
