@@ -22,6 +22,7 @@ class Model:
     all = []
     data_types = {'uuid': str}
     csv_path = 'models.csv'
+    name = 'Model'
     def __init__(self, **attributes):
         '''
         Constructor
@@ -39,7 +40,7 @@ class Model:
         Model.all.append(self)
 
     @classmethod
-    def load_instances(name='Model'):
+    def load_instances(cls):
         '''
         Class method to load instances from a csv file
 
@@ -49,36 +50,33 @@ class Model:
             :param name: name of the class
         '''
         # load the csv file
-        path_to_file = os.path.join('data', Model.csv_path)
+        path_to_file = os.path.join('data', cls.csv_path)
         ## check if file exists
-        if not os.path.exists(path_to_file):
-            instances = []
-        else:
-            #
+        if os.path.exists(path_to_file):
             df = pd.read_csv(path_to_file)
             attributes = {column: df[column] for column in df.columns}
             if len(Model.data_types) != len(attributes):
                 raise AttributeError
-            f"Columns do not match the attributes of the class {name}"
+            f"Columns do not match the attributes of the class {cls.name}"
             for i in range(df.shape[0]):
                 attributes_instance = {column:values[i] for column, values in attributes.items()}
-                attributes_instance = {column: (value if isinstance(value, Model.data_types[column])
-                                            else convert_type(value, Model.data_types[column]))
+                attributes_instance = {column: (value if isinstance(value, cls.data_types[column])
+                                            else convert_type(value, cls.data_types[column]))
                                         for column, value in attributes_instance.items()}
                 Model(**attributes_instance)
 
     @classmethod
-    def export_instances(csv_path='models.csv', name='Model'):
+    def export_instances(cls):
         '''
         Class method to export instances to a csv file
 
         :param csv_path: path to a csv file
         :type csv_path: str
         '''
-        path_to_file = os.path.join('data', Model.csv_path)
-        df = pd.DataFrame([instance.__dict__ for instance in Model.all])
+        path_to_file = os.sep.join(['data', cls.csv_path])
+        df = pd.DataFrame([instance.__dict__ for instance in cls.all])
         # renaming columns of private attributes
-        df.columns = [column.replace(f'_{name}__', '') for column in df.columns]
+        df.columns = [column.replace(f'_{cls.name}__', '') for column in df.columns]
         df.to_csv(path_to_file, index=False)
 
     @property

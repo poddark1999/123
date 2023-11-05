@@ -37,6 +37,11 @@ class User(Model):
     The User class will allow us to model users as well as link the other
     components together
     '''
+    all = []
+    data_types = {'uuid': str, 'first_name': str, 'last_name': str,
+                  'username': str, 'password': str}
+    csv_path = 'users.csv'
+    name = 'User'
 
     def __init__(self, **attributes):
         '''
@@ -44,22 +49,18 @@ class User(Model):
 
         Params
         ------
-            :param **attributes:
-            :param first_name: first name of user
-		    :type first_name: str
-            :param last_name: last name of user
-		    :type last_name: str
-            :param username: username of user
-		    :type username: str
-            :param password: strong password (strength can be checked with is_strong)
-		    :type password: str
+            :param **attributes: attributes of the user
+		    :type **attributes: dict
         '''
-
         self.first_name = attributes['first_name']
         self.last_name = attributes['last_name']
         self.username = attributes['username']
         self.__password = attributes['password']
-        super().__init__()
+        if 'uuid' not in attributes:
+            super().__init__()
+        else:
+            self.__uuid = attributes['uuid']
+        User.all.append(self)
 
 
     def check_password(self, password):
@@ -77,6 +78,14 @@ class User(Model):
             :rtype: bool
         '''
         return  self.__password == password
+
+    @classmethod
+    def load_instances(cls):
+        super(User, cls).load_instances()
+
+    @classmethod
+    def export_instances(cls):
+        super(User, cls).export_instances()
 
     def change_password(self, old_password, new_password):
         '''
@@ -120,7 +129,7 @@ if __name__ == '__main__':
         print(f"Test {i} for is_strong passed!")
 
     # Test User Creation
-    user = User("John", "Doe", "johndoe", "Password123!")
+    user = User(first_name="John", last_name="Doe", username="johndoe", password="Password123!")
     print("User creation test passed!")
 
     # Test Attribute Types
@@ -179,4 +188,12 @@ if __name__ == '__main__':
         assert False, "User class does not inherit attributes from Model!"
 
     print("All tests passed!")
+
+    # Test Load and Export
+    User.load_instances()
+    print("Load instances test passed!")
+    # Generate 10 random users
+    for _ in range(10):
+        User(first_name="John", last_name="Doe", username="johndoe", password="Password123!")
+    User.export_instances()
 
