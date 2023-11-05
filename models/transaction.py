@@ -25,7 +25,7 @@ class Transaction(Model):
         self.user_uuid = user_uuid
         self.date = date
         self.note = note
-        
+
     @property
     def amount(self):
         return self.__amount
@@ -76,11 +76,11 @@ class Income(Transaction):
         :param end_date: date when the income ends (can be None if it's indefinite).
         '''
         super().__init__(amount, user_uuid)
-        self.source = source 
+        self.source = source
         self.frequency = frequency
         self.start_date = start_date
         self.end_date = end_date
-        
+
 
 
 if __name__ == '__main__':
@@ -128,10 +128,10 @@ if __name__ == '__main__':
 
     # Test privacy of relevant attributes
     try:
-        _ = t._Transaction__amount  # Direct access to the private attribute should work within the class context
-        print("Transaction amount is private as expected!")
+        t.amount = 100 # Direct access to the private attribute should not work outside the class
+        print("Transaction amount is not private as expected!")
     except AttributeError:
-        assert False, "Transaction amount is not private!"
+        assert False, "Transaction amount is private as expected!"
 
     # Test other behaviors, like the correct default assignment, etc.
     assert t.date == current_time, "Transaction date not correctly assigned!"
