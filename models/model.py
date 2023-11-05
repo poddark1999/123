@@ -1,13 +1,84 @@
 from uuid import uuid4
+import os
+import pandas as pd
+from datetime import datetime
+
+def convert_type(value, type_):
+    '''
+    Typecasting function
+    '''
+    if type_ == str:
+        return str(value)
+    elif type_ == int:
+        return int(value)
+    elif type_ == float:
+        return float(value)
+    elif type == datetime:
+        return datetime.fromisoformat(value)
 
 class Model:
-
-    def __init__(self):
+    ## define class variable all as an empty list
+    all = []
+    data_types = {'uuid': str}
+    csv_path = 'models.csv'
+    def __init__(self, **attributes):
         '''
         Constructor
         instantiates a model and creates a random UUID (uuid4()) to identify it as a private attribute
+
+        Params
+        ------
+            :param **attributes: attributes of the model
+            :type **attributes: dict
         '''
-        self.__uuid = uuid4()
+        if not attributes:
+            self.__uuid = uuid4()
+        else:
+            self.__uuid = attributes['uuid']
+        Model.all.append(self)
+
+    @classmethod
+    def load_instances(name='Model'):
+        '''
+        Class method to load instances from a csv file
+
+        Params
+        ------
+            :param csv_path: path to the csv file
+            :param name: name of the class
+        '''
+        # load the csv file
+        path_to_file = os.path.join('data', Model.csv_path)
+        ## check if file exists
+        if not os.path.exists(path_to_file):
+            instances = []
+        else:
+            #
+            df = pd.read_csv(path_to_file)
+            attributes = {column: df[column] for column in df.columns}
+            if len(Model.data_types) != len(attributes):
+                raise AttributeError
+            f"Columns do not match the attributes of the class {name}"
+            for i in range(df.shape[0]):
+                attributes_instance = {column:values[i] for column, values in attributes.items()}
+                attributes_instance = {column: (value if isinstance(value, Model.data_types[column])
+                                            else convert_type(value, Model.data_types[column]))
+                                        for column, value in attributes_instance.items()}
+                Model(**attributes_instance)
+
+    @classmethod
+    def export_instances(csv_path='models.csv', name='Model'):
+        '''
+        Class method to export instances to a csv file
+
+        :param csv_path: path to a csv file
+        :type csv_path: str
+        '''
+        path_to_file = os.path.join('data', Model.csv_path)
+        df = pd.DataFrame([instance.__dict__ for instance in Model.all])
+        # renaming columns of private attributes
+        df.columns = [column.replace(f'_{name}__', '') for column in df.columns]
+        df.to_csv(path_to_file, index=False)
 
     @property
     def uuid(self):
@@ -18,6 +89,7 @@ class Model:
         return str(self.__uuid)
 
 if __name__ == '__main__':
+
 
     # Test Case 1: Model instantiation and UUID check
     test_model = Model()
@@ -32,5 +104,13 @@ if __name__ == '__main__':
         pass  # This is expected if _uuid is truly private
 
     print("All tests passed for Model class!")
+    #print(test_model.uuid)
+    # Test Case 3: Load instances from csv file
+    Model.load_instances()
+    for _ in range(10):
+        Model()
+    for model in Model.all:
+        print(model.uuid)
+    Model.export_instances()
 
-    print(Model.uuid)
+

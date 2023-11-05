@@ -38,12 +38,13 @@ class User(Model):
     components together
     '''
 
-    def __init__(self, first_name, last_name, username, password):
+    def __init__(self, **attributes):
         '''
         Constructor method
 
         Params
         ------
+            :param **attributes:
             :param first_name: first name of user
 		    :type first_name: str
             :param last_name: last name of user
@@ -53,10 +54,10 @@ class User(Model):
             :param password: strong password (strength can be checked with is_strong)
 		    :type password: str
         '''
-        self.first_name = first_name
-        self.last_name = last_name
-        self.username = username
-        self.__password = password
+        self.first_name = attributes['first_name']
+        self.last_name = attributes['last_name']
+        self.username = attributes['username']
+        self.__password = attributes['password']
 
     def check_password(self, password):
         '''
