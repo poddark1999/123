@@ -1,4 +1,5 @@
 from uuid import uuid4
+
 import os
 import pandas as pd
 from datetime import datetime
@@ -104,6 +105,7 @@ if __name__ == '__main__':
         pass  # This is expected if _uuid is truly private
 
     print("All tests passed for Model class!")
+
     #print(test_model.uuid)
     # Test Case 3: Load instances from csv file
     Model.load_instances()
@@ -112,5 +114,3 @@ if __name__ == '__main__':
     for model in Model.all:
         print(model.uuid)
     Model.export_instances()
-
-

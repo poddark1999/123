@@ -54,10 +54,13 @@ class User(Model):
             :param password: strong password (strength can be checked with is_strong)
 		    :type password: str
         '''
+
         self.first_name = attributes['first_name']
         self.last_name = attributes['last_name']
         self.username = attributes['username']
         self.__password = attributes['password']
+        super().__init__()
+
 
     def check_password(self, password):
         '''
