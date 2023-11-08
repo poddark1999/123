@@ -1,6 +1,6 @@
 from model import Model
 from datetime import datetime
-
+from typing import Union
 
 class Bucket(Model):
     '''
@@ -10,7 +10,7 @@ class Bucket(Model):
     and additional meta information.
     '''
 
-    def __init__(self, name, goal, user_uuid, deadline, current_amount=0, comment=None):
+    def __init__(self, name: str, goal: Union[float, int], user_uuid: str, deadline: datetime, current_amount=0, comment=None):
         '''
         Constructor method
 
@@ -41,19 +41,36 @@ class Bucket(Model):
         # Private attributes: creation_date, is_completed, current_amount
         # TODO: Initialize the attributes. The creation_date should be set to datetime.now()
         # and completed should be set to False by default.
-        pass
+        
+        if not isinstance(name, str):
+            raise TypeError(f"The type of name should be str, but now it's {type(name)}")
+        if not isinstance(goal, int):
+            raise TypeError(f"The type of goal should be int, but now it's {type(goal)}")
+        if not isinstance(user_uuid, str):
+            raise TypeError(f"The type of user_uuid should be str, but now it's {type(user_uuid)}")
+        if not isinstance(deadline, datetime):
+            raise TypeError(f"The type of deadline should be datetime, but now it's {type(deadline)}")
+        
+        self.name = name
+        self.goal = goal
+        self.user_uuid = user_uuid
+        self.deadline = deadline
+        self.current_amount = current_amount
+        self.comment = comment
+        self.complete = False
+        self.__creation_date = datetime.now()
+        super().__init__()
 
-    @property
-    def creation_date(self, type="date"):
+    def creation_date(self, type_="date"): ## "date", "05.10.2022"
         '''
         Getter method for the date a bucket was created
 
         Params
         ------
-        :param type: String defining the type of return.
+        :param type_: String defining the type of return.
                      Can be "date" for datetime object or "str" for string.
                      Default is "date".
-        :type type: str
+        :type type_: str
 
         Return
         ------
@@ -62,7 +79,11 @@ class Bucket(Model):
         '''
         # TODO: Implement method to return the creation date based on the type parameter
         # The string format of the date should be in the format DD.MM.YYYY
-        pass
+        # "05.10.2022" - > datetime(05, 10, 2022)
+        if type_ == "date": # 判斷輸進去的格式是不是 datetime.datetime
+            return self.__creation_date
+        else:
+            return self.__creation_date.strftime("%d.%m.%Y")
 
     @property
     def is_completed(self):
@@ -78,8 +99,12 @@ class Bucket(Model):
         :rtype: bool
         '''
         # TODO: Return the status of the bucket's completion attribute
-        pass
-
+        
+        if self.complete:
+            if self.current_amount >= self.goal:
+                self.mark_as_completed()
+        return self.complete
+        
     def mark_as_completed(self):
         '''
         Method to set the bucket's goal as achieved
@@ -89,7 +114,7 @@ class Bucket(Model):
         :return: None
         '''
         # TODO: Set the bucket's completed attribute to True
-        pass
+        self.complete = True
 
 
 if __name__ == '__main__':
@@ -97,37 +122,36 @@ if __name__ == '__main__':
     test_bucket = Bucket(name="Test Bucket", goal=100, user_uuid="sample_uuid", deadline=datetime(2023, 12, 31))
     assert isinstance(test_bucket, Bucket), "Error: Unable to instantiate Bucket class."
     assert isinstance(test_bucket.uuid, str) and len(test_bucket.uuid) == 36, "Error: UUID not generated correctly. Ensure it's a string of 36 characters."
-    print("Bucket instantiation test passed!")
+    print("Test Case 1 passed!")
 
     # Test Case 2: creation_date privacy check
     try:
-        test_value = test_bucket.__creation_date
+        test_value = test_bucket._creation_date
         assert False, "Error: Able to directly access the private '_creation_date' attribute. Ensure that it's private and not accessible."
     except AttributeError:
         pass  # Expected outcome
-    print("Privacy test passed for creation_date!")
+    print("Test Case 2 passed!")
 
     # Test Case 3: is_completed privacy check
     try:
-        test_value = test_bucket.__is_completed
+        test_value = test_bucket._is_completed
         assert False, "Error: Able to directly access the private '_is_completed' attribute. Ensure that it's private and not accessible."
     except AttributeError:
         pass  # Expected outcome
-    print("Test Case privacy is_completed passed!")
+    print("Test Case 3 passed!")
 
     # Test Case 4: current_amount privacy check
     try:
-        test_value = test_bucket.__current_amount
+        test_value = test_bucket._current_amount
         assert False, "Error: Able to directly access the private '_current_amount' attribute. Ensure that it's private and not accessible."
     except AttributeError:
         pass  # Expected outcome
-    print("Test Case privacy current_amount passed!")
-    print("Privacy tests passed!"")
+    print("Test Case 4 passed!")
 
     # Test Case 5: creation_date type check & getter check
-    assert isinstance(test_bucket.creation_date, datetime), "Error: 'creation_date' should be of type datetime when accessed without specifying type."
-    assert isinstance(test_bucket.creation_date(type="str"), str), "Error: 'creation_date' should return string when type='str'."
-    assert len(test_bucket.creation_date(type="str").split('.')) == 3, "Error: The string format of the creation date should be in the format DD.MM.YYYY."
+    assert isinstance(test_bucket.creation_date(), datetime), "Error: 'creation_date' should be of type datetime when accessed without specifying type."
+    assert isinstance(test_bucket.creation_date(type_="str"), str), "Error: 'creation_date' should return string when type='str'."
+    assert len(test_bucket.creation_date(type_="str").split('.')) == 3, "Error: The string format of the creation date should be in the format DD.MM.YYYY."
     print("Test Case 5 passed!")
 
     # Test Case 6: Goal achievement check using is_completed and mark_as_completed
@@ -142,7 +166,6 @@ if __name__ == '__main__':
     assert isinstance(test_bucket.user_uuid, str), "Error: 'user_uuid' attribute should be of type string."
     assert isinstance(test_bucket.deadline, datetime), "Error: 'deadline' attribute should be of type datetime."
     assert isinstance(test_bucket.comment, (str, type(None))), "Error: 'comment' attribute should be of type string or None."
-    print("Type checks passed!")
+    print("Test Case 7 passed!")
 
     print("All tests passed for Bucket class!")
-
