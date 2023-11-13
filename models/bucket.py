@@ -1,4 +1,4 @@
-from model import Model
+from .model import Model
 from datetime import datetime
 from typing import Union
 
@@ -146,7 +146,11 @@ if __name__ == '__main__':
         assert False, "Error: Able to directly access the private '_current_amount' attribute. Ensure that it's private and not accessible."
     except AttributeError:
         pass  # Expected outcome
+
     print("Test Case 4 passed!")
+    print("Test Case privacy current_amount passed!")
+    print("Privacy tests passed!")
+
 
     # Test Case 5: creation_date type check & getter check
     assert isinstance(test_bucket.creation_date(), datetime), "Error: 'creation_date' should be of type datetime when accessed without specifying type."

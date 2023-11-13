@@ -1,4 +1,4 @@
-from model import Model
+from .model import Model
 import re
 
 def is_strong(password):
@@ -78,14 +78,6 @@ class User(Model):
             :rtype: bool
         '''
         return  self.__password == password
-
-    @classmethod
-    def load_instances(cls):
-        super(User, cls).load_instances()
-
-    @classmethod
-    def export_instances(cls):
-        super(User, cls).export_instances()
 
     def change_password(self, old_password, new_password):
         '''
@@ -188,12 +180,4 @@ if __name__ == '__main__':
         assert False, "User class does not inherit attributes from Model!"
 
     print("All tests passed!")
-
-    # Test Load and Export
-    User.load_instances()
-    print("Load instances test passed!")
-    # Generate 10 random users
-    for _ in range(10):
-        User(first_name="John", last_name="Doe", username="johndoe", password="Password123!")
-    User.export_instances()
 
