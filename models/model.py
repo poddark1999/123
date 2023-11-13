@@ -21,8 +21,7 @@ class Model:
     ## define class variable all as an empty list
     all = []
     data_types = {'uuid': str}
-    csv_path = 'models.csv'
-    name = 'Model'
+
     def __init__(self, **attributes):
         '''
         Constructor
@@ -39,7 +38,7 @@ class Model:
             self.__uuid = attributes['uuid']
         Model.all.append(self)
 
-    @classmethod
+    """@classmethod
     def load_instances(cls):
         '''
         Class method to load instances from a csv file
@@ -78,7 +77,7 @@ class Model:
         # renaming columns of private attributes
         df.columns = [column.replace(f'_{cls.name}__', '') for column in df.columns]
         df.to_csv(path_to_file, index=False)
-
+    """
     @property
     def uuid(self):
         '''
@@ -106,9 +105,11 @@ if __name__ == '__main__':
 
     #print(test_model.uuid)
     # Test Case 3: Load instances from csv file
+    """
     Model.load_instances()
     for _ in range(10):
         Model()
     for model in Model.all:
         print(model.uuid)
     Model.export_instances()
+    """

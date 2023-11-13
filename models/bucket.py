@@ -1,4 +1,4 @@
-from model import Model
+from .model import Model
 from datetime import datetime
 
 
@@ -122,7 +122,7 @@ if __name__ == '__main__':
     except AttributeError:
         pass  # Expected outcome
     print("Test Case privacy current_amount passed!")
-    print("Privacy tests passed!"")
+    print("Privacy tests passed!")
 
     # Test Case 5: creation_date type check & getter check
     assert isinstance(test_bucket.creation_date, datetime), "Error: 'creation_date' should be of type datetime when accessed without specifying type."

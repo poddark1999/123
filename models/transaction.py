@@ -1,6 +1,6 @@
 from datetime import datetime
-from model import Model
-from user import User
+from .model import Model
+from .user import User
 
 
 class Transaction(Model):
