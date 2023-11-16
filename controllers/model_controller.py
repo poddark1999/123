@@ -2,6 +2,7 @@ from models.model import Model
 import pandas as pd
 import os
 from datetime import datetime
+from typing import Union
 
 def convert_type(value, type_):
     '''
@@ -11,7 +12,7 @@ def convert_type(value, type_):
         return str(value)
     elif type_ == int:
         return int(value)
-    elif type_ == float:
+    elif type_ in [float, Union(float, int)]:
         return float(value)
     elif type == datetime:
         return datetime.fromisoformat(value)
@@ -30,15 +31,19 @@ class ModelController:
         self.name = name
         self.__csv_path = csv_path
 
-    def create(self, **kwargs):
+    def create(self, **attributes):
         """
-        Creates a new instance of a model.
+        Creating a new instance
 
-        Args:
-            **kwargs: Arguments required to instantiate the model.
+        Params
+        ------
+            :param **attributes: attributes of the model
+            :type **attributes: dict
 
-        Returns:
-            Model instance
+        Returns
+        -------
+
+            :return: Model instance
 
         Note:
             This method should be overridden in specific controllers if additional functionality or validation
@@ -58,7 +63,7 @@ class ModelController:
         """
         pass
 
-    def update(self, model_uuid, **kwargs):
+    def update(self, model_uuid, **attributes):
         """
         Updates a specific instance of a model based on its UUID.
 
@@ -118,7 +123,7 @@ class ModelController:
                 raise AttributeError
             f"Columns do not match the attributes of the class {self.name}"
             for i in range(df.shape[0]):
-                attributes_instance = {column:values[i] for column, values in attributes.items()}
+                attributes_instance = {column: values[i] for column, values in attributes.items()}
                 attributes_instance = {column: (value if isinstance(value, self.cls.data_types[column])
                                             else convert_type(value, self.cls.data_types[column]))
                                         for column, value in attributes_instance.items()}
