@@ -1,30 +1,36 @@
 from datetime import datetime
-from .model import Model
-from .user import User
+from model import Model
+from user import User
+from typing import Union
 
 
 class Transaction(Model):
     '''
     Class to represent all possible types of transactions.
     '''
+    all = []
+    data_types = {'uuid': str, 'user_uuid': str, 'amount': Union[float, int],
+                  'note': Union[str, None], 'date': datetime}
 
-    def __init__(self, amount, user_uuid, date=datetime.now(), note=None):
+    def __init__(self, **attributes):
         '''
         Constructor
+
         :param amount: amount of the transaction.
         :param user_uuid: unique identifier of the user associated with this transaction.
         :param date: date of the transaction (default is the current date).
         :param note: any additional notes or comments about this transaction.
         '''
-        super().__init__()
-
-        if not isinstance(amount, (int,float)):
-            raise ValueError('Amount must be an integer or float')
-        self.__amount = float(amount)
-
-        self.user_uuid = user_uuid
-        self.date = date
-        self.note = note
+        self.__amount = attributes['amount']
+        if 'uuid' not in attributes:
+            super().__init__()
+        else:
+            self.__uuid = attributes['uuid']
+        self.user_uuid = attributes['user_uuid']
+        self.date = attributes.get('date', datetime.now())
+        self.note = attributes.get('note', None)
+        if isinstance(self, Transaction):
+            Transaction.all.append(self)
 
     @property
     def amount(self):
@@ -52,22 +58,35 @@ class Allocation(Transaction):
     '''
     Represents money allocations.
     '''
+    all = []
+    data_types = {'uuid': str, 'user_uuid': str, 'date': Union[float, int],
+                  'note': Union[str, None], 'target_uuid': str}
 
-    def __init__(self, amount, user_uuid, target_uuid, date=datetime.now(), note=None ):
+    def __init__(self, **attributes):
         '''
         Constructor
         :param target_uuid: unique identifier of the bucket where the money will be allocated.
         '''
-        super().__init__(amount, user_uuid, date, note)
-        self.target_uuid = target_uuid
+        if 'uuid' in attributes:
+            super().__init__(amount=attributes['amount'], user_uuid=attributes['user_uuid'],
+                            note=attributes.get('note', None), date=attributes.get('date', datetime.now()),
+                            uuid=attributes['uuid'])
+        else:
+            super().__init__(amount=attributes['amount'], user_uuid=attributes['user_uuid'],
+                            note=attributes.get('note', None), date=attributes.get('date', datetime.now()))
+        self.target_uuid = attributes['target_uuid']
+        Allocation.all.append(self)
 
 
 class Income(Transaction):
     '''
     Represents incomes.
     '''
-
-    def __init__(self,amount,user_uuid, source, frequency="One-Time", start_date=datetime.now(), end_date=None):
+    all = []
+    data_types = {'uuid': str, 'user_uuid': str, 'date': Union[float, int],
+                  'note': Union[str, None], 'frequency': str, 'start_date': datetime,
+                  'source': str, 'end_date': Union[None, datetime]}
+    def __init__(self, **attributes):
         '''
         Constructor
         :param source: source of the income (e.g., "Salary", "Freelance").
@@ -75,26 +94,32 @@ class Income(Transaction):
         :param start_date: date when the income starts (relevant for recurring incomes).
         :param end_date: date when the income ends (can be None if it's indefinite).
         '''
-        super().__init__(amount, user_uuid)
-        self.source = source
-        self.frequency = frequency
-        self.start_date = start_date
-        self.end_date = end_date
+        if 'uuid' in attributes:
+            super().__init__(amount=attributes['amount'], user_uuid=attributes['user_uuid'],
+                            note=attributes.get('note', None), date=attributes.get('date', datetime.now()),
+                            uuid=attributes['uuid'])
+        else:
+            super().__init__(amount=attributes['amount'], user_uuid=attributes['user_uuid'],
+                            note=attributes.get('note', None), date=attributes.get('date', datetime.now()))
+        self.source = attributes['source']
+        self.start_date = attributes.get('start_date', datetime.now())
+        self.end_date = attributes.get('end_date', None)
+        self.frequency = attributes.get('frequency', 'One-Time')
 
 
 
 if __name__ == '__main__':
     # Create a User object
-    u = User("John", "Doe", "johndoe", "StrongPass123!")
+    u = User(first_name="John", last_name="Doe", username="johndoe", password="StrongPass123!")
     user_uuid = u.uuid  # Assuming User class has a uuid attribute
 
     # Capture the current time before creating the Transaction object
     current_time = datetime.now()
     # Test if Transaction and derived classes correctly inherit from Model
-    t = Transaction(100, user_uuid, date=current_time)
+    t = Transaction(amount=100, user_uuid=user_uuid, date=current_time)
     #re = RecurringExpense(100, user_uuid, "daily")
-    a = Allocation(100, user_uuid, "transaction-bucket-id")
-    i = Income(100, user_uuid, "Salary")
+    a = Allocation(amount=100, user_uuid=user_uuid, target_uuid="transaction-bucket-id")
+    i = Income(amount=100, user_uuid=user_uuid, source="Salary")
 
     # Test inheritance of Transaction class from Model class
     try:
@@ -131,7 +156,7 @@ if __name__ == '__main__':
         t.amount = 100 # Direct access to the private attribute should not work outside the class
         print("Transaction amount is not private as expected!")
     except AttributeError:
-        assert False, "Transaction amount is private as expected!"
+        print("Privacy test passed!")
 
     # Test other behaviors, like the correct default assignment, etc.
     assert t.date == current_time, "Transaction date not correctly assigned!"

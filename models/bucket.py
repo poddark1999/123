@@ -1,4 +1,4 @@
-from .model import Model
+from model import Model
 from datetime import datetime
 from typing import Union
 
@@ -9,57 +9,36 @@ class Bucket(Model):
     a current_amount (standing for the amount which has already been allocated)
     and additional meta information.
     '''
+    all = []
+    data_types = {'uuid': str, 'name': str, 'goal': Union[float, int],
+                  'user_uuid': str, 'deadline': datetime,
+                  'current_amount': Union[float, int], 'comment':[str, None] }
 
-    def __init__(self, name: str, goal: Union[float, int], user_uuid: str, deadline: datetime, current_amount=0, comment=None):
+    def __init__(self, **attributes):
         '''
         Constructor method
 
         Params
         ------
-        :param name: Name of the bucket
-        :type name: str
-
-        :param goal: Monetary goal to achieve for this bucket
-        :type goal: float or int
-
-        :param user_uuid: UUID of the user creating the bucket
-        :type user_uuid: str
-
-        :param deadline: Date by which the bucket's goal should be met
-        :type deadline: datetime object
-
-        :param current_amount: Amount which has already been allocated to the bucket
-        :type current_amount: integer, default is 0
-
-        :param comment: Optional comment or note about the bucket
-        :type comment: str, default is None
+            :param **attributes: attributes of the bucket
+            :type **attributes: dict
 
         Additionally, upon creation of a bucket, an attribute creation_date
         records when a bucket is created and an attribute completed to track the status.
         '''
-
-        # Private attributes: creation_date, is_completed, current_amount
-        # TODO: Initialize the attributes. The creation_date should be set to datetime.now()
-        # and completed should be set to False by default.
-        
-        if not isinstance(name, str):
-            raise TypeError(f"The type of name should be str, but now it's {type(name)}")
-        if not isinstance(goal, int):
-            raise TypeError(f"The type of goal should be int, but now it's {type(goal)}")
-        if not isinstance(user_uuid, str):
-            raise TypeError(f"The type of user_uuid should be str, but now it's {type(user_uuid)}")
-        if not isinstance(deadline, datetime):
-            raise TypeError(f"The type of deadline should be datetime, but now it's {type(deadline)}")
-        
-        self.name = name
-        self.goal = goal
-        self.user_uuid = user_uuid
-        self.deadline = deadline
-        self.current_amount = current_amount
-        self.comment = comment
+        self.name = attributes['name']
+        self.goal = attributes['goal']
+        self.user_uuid = attributes['user_uuid']
+        self.deadline = attributes['deadline']
+        self.current_amount = attributes.get('current_amount', 0)
+        self.comment = attributes.get('comment', None)
         self.complete = False
         self.__creation_date = datetime.now()
-        super().__init__()
+        if 'uuid' not in attributes:
+            super().__init__()
+        else:
+            self.__uuid = attributes['uuid']
+        Bucket.all.append(self)
 
     def creation_date(self, type_="date"): ## "date", "05.10.2022"
         '''
@@ -99,12 +78,12 @@ class Bucket(Model):
         :rtype: bool
         '''
         # TODO: Return the status of the bucket's completion attribute
-        
+
         if self.complete:
             if self.current_amount >= self.goal:
                 self.mark_as_completed()
         return self.complete
-        
+
     def mark_as_completed(self):
         '''
         Method to set the bucket's goal as achieved

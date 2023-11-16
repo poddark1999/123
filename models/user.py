@@ -1,4 +1,4 @@
-from .model import Model
+from model import Model
 import re
 
 def is_strong(password):
