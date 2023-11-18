@@ -1,6 +1,6 @@
 from datetime import datetime
-from model import Model
-from user import User
+from models.model import Model
+from models.user import User
 from typing import Union
 
 

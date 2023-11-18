@@ -1,4 +1,4 @@
-from model import Model
+from models.model import Model
 from datetime import datetime
 from typing import Union
 
