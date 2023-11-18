@@ -77,7 +77,6 @@ class Bucket(Model):
         :return: Status of bucket's goal completion
         :rtype: bool
         '''
-        # TODO: Return the status of the bucket's completion attribute
 
         if not self.complete:
             if self.current_amount >= self.goal:
@@ -92,8 +91,16 @@ class Bucket(Model):
         ------
         :return: None
         '''
-        # TODO: Set the bucket's completed attribute to True
         self.complete = True
+
+    def check_deadline(self):
+        '''
+        Method to check if the deadline for a bucket has passed.
+        If the bucket is recurrent, the deadline is updated to the next deadline,
+        based on the attribute frequency.
+
+        '''
+        pass
 
 
 if __name__ == '__main__':

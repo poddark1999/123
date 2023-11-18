@@ -59,7 +59,8 @@ class BucketController(ModelController):
             :type kwargs: dict
         Return
         ------
-            :return: Updated bucket instance or relevant error message.
+            :return: Updated bucket instance or None.
+            :rtype: Bucket or None
         '''
         pass
 
@@ -75,7 +76,8 @@ class BucketController(ModelController):
 
         Return
         ------
-            :return: Confirmation message indicating successful deletion or relevant error message.
+            :return: True if Bucket was successfully deleted.
+            :rtype: bool
         '''
         pass
 

@@ -72,13 +72,7 @@ class Allocation(Transaction):
         Constructor
         :param target_uuid: unique identifier of the bucket where the money will be allocated.
         '''
-        if 'uuid' in attributes:
-            super().__init__(amount=attributes['amount'], user_uuid=attributes['user_uuid'],
-                            note=attributes.get('note', None), date=attributes.get('date', datetime.now()),
-                            uuid=attributes['uuid'])
-        else:
-            super().__init__(amount=attributes['amount'], user_uuid=attributes['user_uuid'],
-                            note=attributes.get('note', None), date=attributes.get('date', datetime.now()))
+        super().__init__(**attributes)
         self.target_uuid = attributes['target_uuid']
         Allocation.all.append(self)
 
@@ -99,13 +93,7 @@ class Income(Transaction):
         :param start_date: date when the income starts (relevant for recurring incomes).
         :param end_date: date when the income ends (can be None if it's indefinite).
         '''
-        if 'uuid' in attributes:
-            super().__init__(amount=attributes['amount'], user_uuid=attributes['user_uuid'],
-                            note=attributes.get('note', None), date=attributes.get('date', datetime.now()),
-                            uuid=attributes['uuid'])
-        else:
-            super().__init__(amount=attributes['amount'], user_uuid=attributes['user_uuid'],
-                            note=attributes.get('note', None), date=attributes.get('date', datetime.now()))
+        super().__init__(**attributes)
         self.source = attributes['source']
         self.start_date = attributes.get('start_date', datetime.now())
         self.end_date = attributes.get('end_date', None)

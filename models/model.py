@@ -1,21 +1,5 @@
 from uuid import uuid4
 
-import os
-import pandas as pd
-from datetime import datetime
-
-def convert_type(value, type_):
-    '''
-    Typecasting function
-    '''
-    if type_ == str:
-        return str(value)
-    elif type_ == int:
-        return int(value)
-    elif type_ == float:
-        return float(value)
-    elif type == datetime:
-        return datetime.fromisoformat(value)
 
 class Model:
     ## define class variable all as an empty list
