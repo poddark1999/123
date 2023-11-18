@@ -29,8 +29,6 @@ class Model:
         return str(self.__uuid)
 
 if __name__ == '__main__':
-
-
     # Test Case 1: Model instantiation and UUID check
     test_model = Model()
     assert isinstance(test_model, Model), "Error: Unable to instantiate Model class."
@@ -44,14 +42,3 @@ if __name__ == '__main__':
         pass  # This is expected if _uuid is truly private
 
     print("All tests passed for Model class!")
-
-    #print(test_model.uuid)
-    # Test Case 3: Load instances from csv file
-    """
-    Model.load_instances()
-    for _ in range(10):
-        Model()
-    for model in Model.all:
-        print(model.uuid)
-    Model.export_instances()
-    """
