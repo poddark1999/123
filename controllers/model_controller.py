@@ -55,24 +55,34 @@ class ModelController:
         """
         Retrieves a specific instance of a model based on its UUID.
 
-        Args:
-            model_uuid (str): The unique identifier of the model instance.
+        Params
+        ------
+        :param model_uuid: The unique identifier of the model instance.
+        :type model_uuid: str
 
-        Returns:
-            Model instance or None if not found.
+        Returns
+        -------
+        :return: instance of the model or None if not found.
+        :rtype: Model or None
         """
         pass
 
     def update(self, model_uuid, **attributes):
         """
         Updates a specific instance of a model based on its UUID.
+        This method double-checks whether the attributes
+        that are being changed belong to the model in question and raises an
+        AttributeError if they aren't.
 
-        Args:
-            model_uuid (str): The unique identifier of the model instance.
-            **kwargs: Updated attributes for the model instance.
 
-        Returns:
-            Updated model instance or None if not found.
+        Params
+        ------
+        :param model_uuid: The unique identifier of the model instance.
+        :param **attributes: Updated attributes for the model instance.
+
+        Returns
+        -------
+        Updated model instance or None if not found.
         """
         pass
 
@@ -80,11 +90,15 @@ class ModelController:
         """
         Deletes a specific instance of a model.
 
-        Args:
-            model_uuid (str): The unique identifier of the model instance.
+        Params
+        ------
+        :param model_uuid: The unique identifier of the model instance.
+        :type model_uuid: str
 
-        Returns:
-            True if deletion was successful, False otherwise.
+        Returns
+        -------
+        :return: True if deletion was successful, False otherwise.
+        :rtype: bool
         """
         pass
 
@@ -92,15 +106,16 @@ class ModelController:
         """
         Lists all instances of a model.
 
-        Returns:
-            List of model instances.
+        Returns
+        -------
+        :return: List of model instances.
+        :rtype: list
         """
         return self.cls.all
 
     def export_instances(self):
         '''
         Class method to export instances to a csv file
-
         '''
         path_to_file = os.sep.join(['data', self.__csv_path])
         df = pd.DataFrame([instance.__dict__ for instance in self.cls.all])
@@ -111,7 +126,6 @@ class ModelController:
     def load_instances(self):
         '''
         Class method to load instances from a csv file
-
         '''
         # load the csv file
         path_to_file = os.path.join('data', self.__csv_path)

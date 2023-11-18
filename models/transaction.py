@@ -36,6 +36,11 @@ class Transaction(Model):
     def amount(self):
         return self.__amount
 
+    ## TO DO
+    ## - Add a setter method for the amount attribute
+    ##  - this method will check that the amount which is added is non-negative and raise a ValueError
+    ##    if it is.
+
 
 
 #class RecurringExpense(Transaction): ------commented as it needs to be moved to buckets
@@ -105,7 +110,6 @@ class Income(Transaction):
         self.start_date = attributes.get('start_date', datetime.now())
         self.end_date = attributes.get('end_date', None)
         self.frequency = attributes.get('frequency', 'One-Time')
-
 
 
 if __name__ == '__main__':
