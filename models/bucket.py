@@ -1,5 +1,7 @@
 from models.model import Model
 from datetime import datetime
+from datetime import timedelta
+
 from typing import Union
 
 class Bucket(Model):
@@ -12,7 +14,8 @@ class Bucket(Model):
     all = []
     data_types = {'uuid': str, 'name': str, 'goal': Union[float, int],
                   'user_uuid': str, 'deadline': datetime,
-                  'current_amount': Union[float, int], 'comment':[str, None] }
+                  'current_amount': Union[float, int], 'comment':[str, None],
+                   'frequency':[str,None]}
 
     def __init__(self, **attributes):
         '''
@@ -33,6 +36,13 @@ class Bucket(Model):
         self.current_amount = attributes.get('current_amount', 0)
         self.comment = attributes.get('comment', None)
         self.complete = False
+        
+        #create a list of accepted frequencies
+        valid_frequencies = {None, "weekly", "2_weeks", "monthly", "quarterly", "half_yearly", "annually"}
+        self.frequency = attributes.get('frequency',None)
+        if self.frequency not in valid_frequencies:
+            raise ValueError(f"Invalid frequency: {self.frequency}. Must be one of {valid_frequencies}")
+        
         self.__creation_date = datetime.now()
         if 'uuid' not in attributes:
             super().__init__()
@@ -100,7 +110,22 @@ class Bucket(Model):
         based on the attribute frequency.
 
         '''
-        pass
+        current_datetime = datetime.now()
+        if (self.frequency is not None) and (self.deadline < current_datetime):
+            if self.frequency == 'weekly':
+                self.deadline += timedelta(days=7)
+            elif self.frequency == '2_weeks':
+                self.deadline += timedelta(weeks=2)
+            elif self.frequency == 'monthly':
+                self.deadline += timedelta(days=30)
+            elif self.frequency == 'quarterly':
+                self.deadline += timedelta(days=91)
+            elif self.frequency == 'half_yearly':
+                self.deadline += timedelta(days=180)
+            elif self.frequency == 'annually':
+                self.deadline += timedelta(days=365)
+        
+
 
 
 if __name__ == '__main__':
