@@ -14,8 +14,8 @@ class Bucket(Model):
     all = []
     data_types = {'uuid': str, 'name': str, 'goal': Union[float, int],
                   'user_uuid': str, 'deadline': datetime,
-                  'current_amount': Union[float, int], 'comment':[str, None],
-                   'frequency':[str,None]}
+                  'current_amount': Union[float, int], 'comment':Union[str, None],
+                   'frequency':Union[str,None]}
 
     valid_frequencies = {"weekly": timedelta(days=7),
                          "2_weeks": timedelta(weeks=2),
@@ -48,7 +48,7 @@ class Bucket(Model):
         self.frequency = attributes.get('frequency',None)
         if self.frequency not in Bucket.valid_frequencies and self.frequency != None:
             raise ValueError(f"Invalid frequency: {self.frequency}. \
-                Must be one of {', '.join([key for key in Bucket.valid_frequencies.keys()])}")
+                Must be one of {', '.join([key for key in Bucket.valid_frequencies])}")
 
         self.__creation_date = datetime.now()
         if 'uuid' not in attributes:
@@ -124,7 +124,7 @@ class Bucket(Model):
 
 if __name__ == '__main__':
     # Test Case 1: Bucket instantiation and UUID check
-    test_bucket = Bucket(name="Test Bucket", goal=100, user_uuid="sample_uuid", deadline=datetime(2023, 12, 31))
+    test_bucket = Bucket(name="Test Bucket", goal=100, user_uuid="sample_uuid", deadline=datetime(2023, 12, 31), frequency='daily')
     assert isinstance(test_bucket, Bucket), "Error: Unable to instantiate Bucket class."
     assert isinstance(test_bucket.uuid, str) and len(test_bucket.uuid) == 36, "Error: UUID not generated correctly. Ensure it's a string of 36 characters."
     print("Test Case 1 passed!")
