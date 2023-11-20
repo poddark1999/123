@@ -48,7 +48,7 @@ class Bucket(Model):
         self.frequency = attributes.get('frequency',None)
         if self.frequency not in Bucket.valid_frequencies and self.frequency != None:
             raise ValueError(f"Invalid frequency: {self.frequency}. \
-                Must be one of {', '.join([key for key in Bucket.valid_frequencies])}")
+Must be one of {', '.join([key for key in Bucket.valid_frequencies])}")
 
         self.__creation_date = datetime.now()
         if 'uuid' not in attributes:
