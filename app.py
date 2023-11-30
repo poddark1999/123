@@ -62,5 +62,5 @@ def list_buckets():
     return render_template('/buckets/list_buckets.html', title='List Buckets', buckets=uc.all())
 """
 if __name__ == '__main__':
-	app.run(port=5000)
+	app.run(port=5000, debug=True)
 	uc.export_instances()

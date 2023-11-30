@@ -26,17 +26,17 @@ class LoginForm(FlaskForm):
     """
     Form for logging in
     """
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Sign In')
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+    submit = SubmitField('sign in')
 
 class RegisterForm(FlaskForm):
     """
     Form for registering
     """
-    username = StringField('Username', validators=[DataRequired()])
-    first_name = StringField('First_name', validators=[DataRequired()])
-    last_name = StringField('Last_name', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired(), strong_password_check])
-    password2 = PasswordField('Repeat Password', validators=[DataRequired()])
-    submit = SubmitField('Register')
+    username = StringField('username', validators=[DataRequired()])
+    first_name = StringField('first name', validators=[DataRequired()])
+    last_name = StringField('last name', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired(), strong_password_check])
+    password2 = PasswordField('repeat password', validators=[DataRequired()])
+    submit = SubmitField('register')
