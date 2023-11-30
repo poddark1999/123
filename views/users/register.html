@@ -70,8 +70,22 @@
 	</script>
 	<p>
 		{{ form.password2.label }}<br>
-		{{ form.password2(size=32) }}
+		{{ form.password2(id="password2", size=32, oninput="checkPasswordMatch()") }}
+		<span id="passwordMatch">❌ Passwords must match</span>
 	</p>
+
+	<script>
+		function checkPasswordMatch() {
+			var password = document.getElementById('password').value;
+			var password2 = document.getElementById('password2').value;
+
+			if (password === password2) {
+				document.getElementById('passwordMatch').innerHTML = "✅ Passwords match";
+			} else {
+				document.getElementById('passwordMatch').innerHTML = "❌ Passwords must match";
+			}
+		}
+	</script>
 	<p>{{ form.submit() }}</p>
 	<!--Add a login link -->
 	<p>Already registered? <a href="{{ url_for('login') }}">Click here to login.</a></p>
