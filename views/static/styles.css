@@ -1,24 +1,26 @@
-/*@font-face {
-	font-family: 'MyCustomFont';
-	src: url('{{ url_for(' static', filename=' fonts/MyCustomFont.woff2') }}') format('woff2'),
-	url('{{ url_for(' static', filename=' fonts/MyCustomFont.woff') }}') format('woff');
+@font-face {
+	font-family: 'Montserrat';
+	src: url('/fonts/Montserrat-Bold.ttf') format('truetype'),
+		url('/fonts/Montserrat-ExtraLight.ttf') format('truetype'),
+		url('/fonts/Montserrat-Light.ttf') format('truetype'),
+		url('/fonts/Montserrat-Medium.ttf') format('truetype'),
+		url('/fonts/Montserrat-Regular.ttf') format('truetype'),
+		url('/fonts/Montserrat-SemiBold.ttf') format('truetype'),
+		url('/fonts/Montserrat-Thin.ttf') format('truetype');
 }
-*/
-input[type=text], input[type=password], select, textarea {
-    width: 100%;
-    max-width: 500px; /* Limit the maximum width */
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-top: 6px;
-    margin-bottom: 16px;
-    resize: vertical;
-}
-
 
 body {
 	background-color: #f0f0f0;
+	font-family: 'Montserrat', sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+}
+
+h1 {
+	text-align: center;
 }
 
 button,
@@ -32,7 +34,8 @@ input[type=submit] {
 	text-decoration: none;
 	display: inline-block;
 	font-size: 16px;
-	margin: 4px 2px;
+	margin: 4px auto;
+	display:block;
 	cursor: pointer;
 	border-radius: 12px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -44,7 +47,6 @@ select,
 textarea {
 	width: 100%;
 	max-width: 500px;
-	/* Limit the maximum width */
 	padding: 12px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
