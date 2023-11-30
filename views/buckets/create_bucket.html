@@ -1,0 +1,70 @@
+
+<h1>
+	Create a new bucket
+</h1>
+
+<form action="{{ url_for('create_bucket') }}" method="post">
+	{{ form.hidden_tag() }}
+	<p>
+		{{ form.name.label }}<br>
+		{{ form.name(size=32) }}
+		{% if form.name.errors %}
+	<ul class="errors">
+		{% for error in form.name.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p>
+		{{ form.goal.label }}<br>
+		<input type="range" id="goalSlider" name="goal" min="0" max="100000" value="{{ form.goal.data or 0 }}"
+			oninput="updateGoalInput(this.value)">
+		<input type="text" id="goalInput" value="{{ (form.goal.data or 0)|int|round|safe }}"
+			oninput="updateGoalSlider(this.value)">
+		{% if form.goal.errors %}
+	<ul class="errors">
+		{% for error in form.goal.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<script>
+		function updateGoalInput(val) {
+				document.getElementById('goalInput').value = parseInt(val).toLocaleString();
+			}
+
+			function updateGoalSlider(val) {
+				val = val.replace(/,/g, '');
+				document.getElementById('goalSlider').value = val;
+			}
+	</script>
+	<p>
+		{{ form.deadline.label }}<br>
+		{{ form.deadline() }}
+		{% if form.deadline.errors %}
+	<ul class="errors">
+		{% for error in form.deadline.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p>
+		{{ form.comment.label }}<br>
+		{{ form.comment(size=32) }}
+	</p>
+	<p>
+		{{ form.frequency.label }}<br>
+		{{ form.frequency()}}
+		{% if form.frequency.errors %}
+	<ul class="errors">
+		{% for error in form.frequency.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p>{{ form.submit() }}</p>
+</form>

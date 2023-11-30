@@ -40,8 +40,6 @@ class User(Model):
     all = []
     data_types = {'uuid': str, 'first_name': str, 'last_name': str,
                   'username': str, 'password': str}
-    csv_path = 'users.csv'
-    name = 'User'
 
     def __init__(self, **attributes):
         '''

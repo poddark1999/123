@@ -1,4 +1,6 @@
-
+flask>=3.0.0
+flask-login>=0.6.3
+Flask-WTF>=1.2.1
 lxml>=4.9.1
 matplotlib>=3.5.2
 matplotlib-inline>=0.1.6
@@ -9,6 +11,8 @@ plotly>=5.17.0
 seaborn>=0.13.0
 tk>=0.1.0
 uuid>=1.30
+wtforms>=3.1.1
+
 
 
 

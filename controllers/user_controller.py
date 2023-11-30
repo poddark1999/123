@@ -1,5 +1,6 @@
+from models.model import Model
 from models.user import User, is_strong
-from model_controller import ModelController
+from controllers.model_controller import ModelController
 
 
 class UserController(ModelController):
@@ -7,6 +8,9 @@ class UserController(ModelController):
     Controller for the User model.
     Manages operations related to the User.
     '''
+
+    def __init__(self, cls=User, name='User', csv_path='users.csv'):
+        super().__init__(cls, name, csv_path)
 
     @staticmethod
     def create_user(first_name, last_name, username, password):
@@ -23,8 +27,9 @@ class UserController(ModelController):
         - User object if successfully created, None otherwise.
         '''
         if is_strong(password):
-            return User(first_name, last_name, username, password)
-        return None
+            return User(first_name=first_name, last_name=last_name,
+                        username=username, password=password)
+        raise Exception('Password is not strong enough')
 
     @staticmethod
     def change_user_password(user, old_password, new_password):
@@ -44,6 +49,12 @@ class UserController(ModelController):
         # and using the User's instance method to change the password if conditions are met.
         pass
 
+    @staticmethod
+    def check_login(username, password):
+        for user in User.all:
+            if user.username == user.password:
+                return True
+        return False
     # Additional methods related to user can be added here.
 
 
