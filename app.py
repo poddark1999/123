@@ -7,7 +7,7 @@ from flask import request
 
 uc = UserController()
 
-app = Flask(__name__, template_folder='views')
+app = Flask(__name__, template_folder='views', static_folder='views/static')
 app.secret_key = 'kgakjgkjg'
 @app.route('/')
 def index():
