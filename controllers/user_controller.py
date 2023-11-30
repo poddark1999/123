@@ -12,6 +12,12 @@ class UserController(ModelController):
     def __init__(self, cls=User, name='User', csv_path='users.csv'):
         super().__init__(cls, name, csv_path)
 
+    def export_instances(self):
+        return super().export_instances()
+
+    def import_instances(self):
+        return super().import_instances()
+
     @staticmethod
     def create_user(first_name, last_name, username, password):
         '''
@@ -60,3 +66,4 @@ class UserController(ModelController):
 
 if __name__ == '__main__':
     pass
+

@@ -33,7 +33,8 @@ def login():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        uc.create_user(**form.data)
+        form_data = {key: value for key, value in form.data.items() if key in ['username', 'password', 'first_name', 'last_name']}
+        uc.create_user(**form_data)
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('/users/register.html', title='Register', form=form)
