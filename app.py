@@ -21,6 +21,7 @@ def load_user(user_id):
     return uc.retrieve(user_id)
 
 @app.route('/')
+@login_required
 def index():
 	return 'Hello world'
 
