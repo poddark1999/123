@@ -65,7 +65,9 @@ class ModelController:
         :return: instance of the model or None if not found.
         :rtype: Model or None
         """
-        pass
+        for instance in self.cls.all:
+            if instance.uuid == model_uuid:
+                return instance
 
     def update(self, model_uuid, **attributes):
         """

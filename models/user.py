@@ -1,4 +1,5 @@
 from models.model import Model
+from flask_login import UserMixin, login_manager
 import re
 
 def is_strong(password):
@@ -32,7 +33,7 @@ def is_strong(password):
     return True
 
 
-class User(Model):
+class User(Model, UserMixin):
     '''
     The User class will allow us to model users as well as link the other
     components together
@@ -98,6 +99,12 @@ class User(Model):
             raise ValueError("The new password is not strong enough.")
 
         self.__password = new_password
+
+    def get_id(self):
+        '''
+        Method to get the user's ID
+        '''
+        return self.uuid
 
 if __name__ == '__main__':
     # Tests for is_strong function

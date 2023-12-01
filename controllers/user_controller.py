@@ -59,8 +59,8 @@ class UserController(ModelController):
     def check_login(username, password):
         for user in User.all:
             if user.username == user.password:
-                return True
-        return False
+                return user
+        return None
     # Additional methods related to user can be added here.
 
 
