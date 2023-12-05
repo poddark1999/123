@@ -6,7 +6,7 @@ class TransactionController(ModelController):
     '''
     Controller class for managing operations related to Transactions.
     '''
-
+    all = []
     @staticmethod
     def create_transaction(type_, amount, date, user_uuid,
                            description=None, recurrence=None, end_date=None):

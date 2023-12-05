@@ -11,11 +11,10 @@ class Bucket(Model):
     a current_amount (standing for the amount which has already been allocated)
     and additional meta information.
     '''
-    all = []
-    data_types = {'uuid': str, 'name': str, 'goal': Union[float, int],
-                  'user_uuid': str, 'deadline': datetime,
-                  'current_amount': Union[float, int], 'comment':Union[str, None],
-                   'frequency':Union[str,None]}
+    data_types = {'uuid': str, 'name': str, 'goal': float | int,
+                  'user_uuid': str, 'deadline': datetime, 'creation_date': datetime,
+                  'current_amount': float | int, 'comment':str | None,
+                   'frequency':str | None, 'complete':bool}
 
     valid_frequencies = {"weekly": timedelta(days=7),
                          "2_weeks": timedelta(weeks=2),
@@ -49,13 +48,14 @@ class Bucket(Model):
         if self.frequency not in Bucket.valid_frequencies and self.frequency != None:
             raise ValueError(f"Invalid frequency: {self.frequency}. \
 Must be one of {', '.join([key for key in Bucket.valid_frequencies])}")
-
-        self.__creation_date = datetime.now()
+        if 'creation_date' not in attributes:
+            self.__creation_date = datetime.now()
+        else:
+            self.__creation_date = attributes['creation_date']
         if 'uuid' not in attributes:
             super().__init__()
         else:
-            self.__uuid = attributes['uuid']
-        Bucket.all.append(self)
+            self.uuid = attributes['uuid']
 
     def creation_date(self, type_="date"): ## "date", "05.10.2022"
         '''
@@ -124,7 +124,7 @@ Must be one of {', '.join([key for key in Bucket.valid_frequencies])}")
 
 if __name__ == '__main__':
     # Test Case 1: Bucket instantiation and UUID check
-    test_bucket = Bucket(name="Test Bucket", goal=100, user_uuid="sample_uuid", deadline=datetime(2023, 12, 31), frequency='daily')
+    test_bucket = Bucket(name="Test Bucket", goal=100, user_uuid="sample_uuid", deadline=datetime(2023, 12, 31), frequency='weekly')
     assert isinstance(test_bucket, Bucket), "Error: Unable to instantiate Bucket class."
     assert isinstance(test_bucket.uuid, str) and len(test_bucket.uuid) == 36, "Error: UUID not generated correctly. Ensure it's a string of 36 characters."
     print("Test Case 1 passed!")

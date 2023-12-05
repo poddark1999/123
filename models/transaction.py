@@ -8,9 +8,8 @@ class Transaction(Model):
     '''
     Class to represent all possible types of transactions.
     '''
-    all = []
-    data_types = {'uuid': str, 'user_uuid': str, 'amount': Union[float, int],
-                  'note': Union[str, None], 'date': datetime}
+    data_types = {'uuid': str, 'user_uuid': str, 'amount': float | int,
+                  'note': str | None, 'date': datetime}
 
     def __init__(self, **attributes):
         '''
@@ -29,8 +28,6 @@ class Transaction(Model):
         self.user_uuid = attributes['user_uuid']
         self.date = attributes.get('date', datetime.now())
         self.note = attributes.get('note', None)
-        if isinstance(self, Transaction):
-            Transaction.all.append(self)
 
     @property
     def amount(self):
@@ -64,8 +61,8 @@ class Allocation(Transaction):
     Represents money allocations.
     '''
     all = []
-    data_types = {'uuid': str, 'user_uuid': str, 'date': Union[float, int],
-                  'note': Union[str, None], 'target_uuid': str}
+    data_types = {'uuid': str, 'user_uuid': str, 'date': float | int,
+                  'note': str | None, 'target_uuid': str}
 
     def __init__(self, **attributes):
         '''
@@ -74,7 +71,6 @@ class Allocation(Transaction):
         '''
         super().__init__(**attributes)
         self.target_uuid = attributes['target_uuid']
-        Allocation.all.append(self)
 
 
 class Income(Transaction):
@@ -82,9 +78,9 @@ class Income(Transaction):
     Represents incomes.
     '''
     all = []
-    data_types = {'uuid': str, 'user_uuid': str, 'date': Union[float, int],
-                  'note': Union[str, None], 'frequency': str, 'start_date': datetime,
-                  'source': str, 'end_date': Union[None, datetime]}
+    data_types = {'uuid': str, 'user_uuid': str, 'date': float | int,
+                  'note': str | None, 'frequency': str, 'start_date': datetime,
+                  'source': str, 'end_date': None | datetime}
     def __init__(self, **attributes):
         '''
         Constructor

@@ -9,17 +9,17 @@ class UserController(ModelController):
     Manages operations related to the User.
     '''
 
-    def __init__(self, cls=User, name='User', csv_path='users.csv'):
-        super().__init__(cls, name, csv_path)
+    def __init__(self):
+        self.all = []
+        super().__init__()
 
     def export_instances(self):
-        return super().export_instances()
+        return super().export_instances(csv='users.csv', cls=User)
 
-    def import_instances(self):
-        return super().import_instances()
+    def load_instances(self):
+        return super().load_instances('User', 'users.csv', User, User.data_types)
 
-    @staticmethod
-    def create_user(first_name, last_name, username, password):
+    def create_user(self, first_name, last_name, username, password):
         '''
         Creates a new User object if the provided password is strong enough.
 
@@ -33,8 +33,10 @@ class UserController(ModelController):
         - User object if successfully created, None otherwise.
         '''
         if is_strong(password):
-            return User(first_name=first_name, last_name=last_name,
+            user = User(first_name=first_name, last_name=last_name,
                         username=username, password=password)
+            self.all.append(user)
+            return user
         raise Exception('Password is not strong enough')
 
     @staticmethod
@@ -55,10 +57,9 @@ class UserController(ModelController):
         # and using the User's instance method to change the password if conditions are met.
         pass
 
-    @staticmethod
-    def check_login(username, password):
-        for user in User.all:
-            if user.username == user.password:
+    def check_login(self, username, password):
+        for user in self.all:
+            if user.username == username and user.check_password(password):
                 return user
         return None
     # Additional methods related to user can be added here.

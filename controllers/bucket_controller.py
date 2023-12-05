@@ -1,13 +1,12 @@
-from model_controller import ModelController
+from controllers.model_controller import ModelController
 from models.bucket import Bucket
 
 class BucketController(ModelController):
     '''
     Controller class for managing operations related to Buckets.
     '''
-
-    @staticmethod
-    def create_bucket(name, goal, deadline, user_uuid, comment=None):
+    all = []
+    def create_bucket(self, name, goal, deadline, user_uuid, frequency, comment=None):
         '''
         Creates a new bucket.
 
@@ -28,7 +27,15 @@ class BucketController(ModelController):
         ------
             :return: Newly created bucket instance or relevant error message.
         '''
-        pass
+        bucket = Bucket(name=name, goal=goal, deadline=deadline,
+                        user_uuid=user_uuid, comment=comment)
+        self.all.append(bucket)
+
+    def export_instances(self):
+        return super().export_instances(csv='buckets.csv', cls=Bucket)
+
+    def load_instances(self):
+        return super().load_instances('Bucket', 'buckets.csv', Bucket, Bucket.data_types)
 
     @staticmethod
     def retrieve_bucket(bucket_uuid):
@@ -81,8 +88,7 @@ class BucketController(ModelController):
         '''
         pass
 
-    @staticmethod
-    def list_buckets(user_uuid):
+    def list_buckets(self, user_uuid):
         '''
         Lists all buckets associated with a user.
 
@@ -95,7 +101,7 @@ class BucketController(ModelController):
         ------
             :return: List of bucket instances associated with the user or relevant error message.
         '''
-        pass
+        return filter(lambda bucket: bucket.user_uuid == user_uuid,  self.all)
 
     @staticmethod
     def check_bucket_status(bucket_uuid):

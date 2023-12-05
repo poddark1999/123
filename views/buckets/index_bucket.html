@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+	<title>User's Buckets</title>
+</head>
+
+<body>
+	<h1>{{ user.username }}'s Buckets</h1>
+	{% if buckets %}
+	<ul>
+		{% for bucket in buckets %}
+		<li>
+			<h2>{{ bucket.name }}</h2>
+			<p>Goal: {{ bucket.goal }}</p>
+			<p>Deadline: {{ bucket.deadline }}</p>
+			<p>Frequency: {{ bucket.frequency }}</p>
+			<p>Comment: {{ bucket.comment }}</p>
+			<!-- Add more bucket details here -->
+		</li>
+		{% endfor %}
+	</ul>
+	{% else %}
+	<p>No buckets found.</p>
+	{% endif %}
+
+	<a href="{{ url_for('create_bucket') }}">Create a new bucket</a>
+	<a href="{{ url_for('index') }}">Back to homepage</a>
+</body>
+
+
+
+</html>

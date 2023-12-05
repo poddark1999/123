@@ -38,7 +38,6 @@ class User(Model, UserMixin):
     The User class will allow us to model users as well as link the other
     components together
     '''
-    all = []
     data_types = {'uuid': str, 'first_name': str, 'last_name': str,
                   'username': str, 'password': str}
 
@@ -58,8 +57,7 @@ class User(Model, UserMixin):
         if 'uuid' not in attributes:
             super().__init__()
         else:
-            self.__uuid = attributes['uuid']
-        User.all.append(self)
+            self.uuid = attributes['uuid']
 
 
     def check_password(self, password):
@@ -99,12 +97,6 @@ class User(Model, UserMixin):
             raise ValueError("The new password is not strong enough.")
 
         self.__password = new_password
-
-    def get_id(self):
-        '''
-        Method to get the user's ID
-        '''
-        return self.uuid
 
 if __name__ == '__main__':
     # Tests for is_strong function
