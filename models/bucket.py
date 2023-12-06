@@ -42,6 +42,7 @@ class Bucket(Model):
         self.current_amount = attributes.get('current_amount', 0)
         self.comment = attributes.get('comment', None)
         self.complete = False
+        self.icon = attributes.get('icon', None)
 
         #create a list of accepted frequencies
         self.frequency = attributes.get('frequency',None)

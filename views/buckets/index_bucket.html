@@ -3,24 +3,27 @@
 
 <head>
 	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<title>User's Buckets</title>
 </head>
+
 
 <body>
 	<h1>{{ user.username }}'s Buckets</h1>
 	{% if buckets %}
-	<ul>
+	<div class="card">
 		{% for bucket in buckets %}
-		<li>
+		<div class="bucket-card">
 			<h2>{{ bucket.name }}</h2>
-			<p>Goal: {{ bucket.goal }}</p>
-			<p>Deadline: {{ bucket.deadline }}</p>
-			<p>Frequency: {{ bucket.frequency }}</p>
-			<p>Comment: {{ bucket.comment }}</p>
+			<p><i class="fas fa-bullseye"></i> Goal: {{ bucket.goal }}</p>
+			<p><i class="far fa-calendar-alt"></i> Deadline: {{ bucket.deadline }}</p>
+			<p><i class="fas fa-sync-alt"></i> Frequency: {{ bucket.frequency }}</p>
+			<p><i class="far fa-comment"></i> Comment: {{ bucket.comment }}</p>
 			<!-- Add more bucket details here -->
-		</li>
+			<a href="{{ url_for('show_bucket', uuid=bucket.uuid) }}">View Details</a>
+		</div>
 		{% endfor %}
-	</ul>
+	</div>
 	{% else %}
 	<p>No buckets found.</p>
 	{% endif %}
@@ -28,7 +31,5 @@
 	<a href="{{ url_for('create_bucket') }}">Create a new bucket</a>
 	<a href="{{ url_for('index') }}">Back to homepage</a>
 </body>
-
-
 
 </html>

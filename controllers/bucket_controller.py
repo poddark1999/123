@@ -38,7 +38,7 @@ class BucketController(ModelController):
         return super().load_instances('Bucket', 'buckets.csv', Bucket, Bucket.data_types)
 
     @staticmethod
-    def retrieve_bucket(bucket_uuid):
+    def retrieve_bucket(self, bucket_uuid):
         '''
         Retrieves a bucket based on its UUID.
 
@@ -51,7 +51,9 @@ class BucketController(ModelController):
         ------
             :return: Bucket instance corresponding to the provided UUID or relevant error message.
         '''
-        pass
+        for bucket in self.all:
+            if bucket.uuid == bucket_uuid:
+                return bucket
 
     @staticmethod
     def update_bucket(bucket_uuid, **kwargs):

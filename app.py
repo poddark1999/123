@@ -99,9 +99,16 @@ def logout():
 
 
 @app.route('/buckets', methods=['GET'])
+@login_required
 def list_buckets():
     return render_template('/buckets/index_bucket.html', title='List Buckets',
                            user=current_user,buckets=bc.list_buckets(current_user.get_id()))
+
+@app.route('/buckets/<uuid>', methods=['GET'])
+@login_required
+def show_bucket(uuid):
+    return render_template('/buckets/show_bucket.html', title='Show Bucket',
+                           user=current_user, bucket=bc.retrieve(uuid))
 
 if __name__ == '__main__':
 	uc.load_instances()

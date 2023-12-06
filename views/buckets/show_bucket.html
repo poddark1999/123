@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+	<h1>{{ bucket.name }}</h1>
+	<p>Goal: {{ bucket.goal }}</p>
+	<p>Deadline: {{ bucket.deadline }}</p>
+	<p>Current Amount: {{ bucket.current_amount }}</p>
+	<a href="{{ url_for('list_buckets')}}">Go back to my buckets</a>
+	<a href="{{ url_for('index') }}">Back to homepage</a>
+</body>
+</html>
