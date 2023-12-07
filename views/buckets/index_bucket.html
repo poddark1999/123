@@ -14,7 +14,7 @@
 	<div class="card">
 		{% for bucket in buckets %}
 		<div class="bucket-card">
-			<h2>{{ bucket.name }}</h2>
+			<h2>{{ bucket.icon }}{{ bucket.name }}</h2>
 			<p><i class="fas fa-bullseye"></i> Goal: {{ bucket.goal }}</p>
 			<p><i class="far fa-calendar-alt"></i> Deadline: {{ bucket.deadline }}</p>
 			<p><i class="fas fa-sync-alt"></i> Frequency: {{ bucket.frequency }}</p>

@@ -60,6 +60,17 @@
 		{{ form.comment(size=32) }}
 	</p>
 	<p>
+		{{ form.icon.label }}<br>
+		{{ form.icon()}}
+		{% if form.icon.errors %}
+	<ul class="errors">
+		{% for error in form.icon.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p>
 		{{ form.frequency.label }}<br>
 		{{ form.frequency()}}
 		{% if form.frequency.errors %}

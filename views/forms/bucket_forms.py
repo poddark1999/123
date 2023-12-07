@@ -12,12 +12,21 @@ class BucketForm(FlaskForm):
 	goal = FloatField('Goal', validators=[DataRequired()])
 	deadline = DateField('Deadline', validators=[DataRequired()])
 	comment = StringField('Comment')
-	frequency = SelectField('Frequency', choices=[('weekly', 'weekly'),
+	frequency = SelectField('Frequency', choices=[('unique','non-recurring'),
+     											  ('weekly', 'weekly'),
 												  ('2_weeks', 'biweekly'),
 												  ('monthly', 'monthly'),
 												  ('quarterly', 'quarterly'),
 												  ('half_yearly', 'semi-annual'),
 												  ('yearly', 'annually')])
+
+	icon = SelectField('Category', choices=[('🎓', '🎓Education'),
+												 ('🏥', '🏥Medical'),
+												 ('🥎', '🥎Sports'),
+												 ('✈️', '✈️Travel'),
+												 ('💻', '💻Technology'),
+												 ('🏠', '🏠House'),
+												 ('💸', '💸Taxes')])
 	submit = SubmitField('Create')
 
 	def validate_deadline(self, deadline):

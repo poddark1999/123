@@ -6,7 +6,7 @@ class BucketController(ModelController):
     Controller class for managing operations related to Buckets.
     '''
     all = []
-    def create_bucket(self, name, goal, deadline, user_uuid, frequency, comment=None):
+    def create_bucket(self, name, goal, deadline, user_uuid, frequency, icon=None,comment=None):
         '''
         Creates a new bucket.
 
@@ -28,7 +28,7 @@ class BucketController(ModelController):
             :return: Newly created bucket instance or relevant error message.
         '''
         bucket = Bucket(name=name, goal=goal, deadline=deadline,
-                        user_uuid=user_uuid, comment=comment)
+                        user_uuid=user_uuid, comment=comment, icon=icon)
         self.all.append(bucket)
 
     def export_instances(self):

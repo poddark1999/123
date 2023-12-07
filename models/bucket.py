@@ -14,9 +14,10 @@ class Bucket(Model):
     data_types = {'uuid': str, 'name': str, 'goal': float | int,
                   'user_uuid': str, 'deadline': datetime, 'creation_date': datetime,
                   'current_amount': float | int, 'comment':str | None,
-                   'frequency':str | None, 'complete':bool}
+                   'frequency':str | None, 'complete':bool, 'icon': str | None}
 
-    valid_frequencies = {"weekly": timedelta(days=7),
+    valid_frequencies = {"unique": None,
+                         "weekly": timedelta(days=7),
                          "2_weeks": timedelta(weeks=2),
                          "monthly": timedelta(days=30),
                          "quarterly": timedelta(days=91),
