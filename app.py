@@ -1,8 +1,6 @@
-from flask import render_template, flash, redirect, url_for, Flask, request
+from flask import render_template, flash, redirect, url_for, Flask, request, session
 from flask_login import login_required, login_user, logout_user, LoginManager, current_user
 from datetime import timedelta
-from models.bucket import Bucket
-from models.user import User
 from controllers.bucket_controller import BucketController
 from controllers.user_controller import UserController
 from views.forms.user_forms import LoginForm, RegisterForm
@@ -49,6 +47,8 @@ def login():
             # Log the user in
             # And then redirect to another page
             login_user(user)
+            session['user_id'] = user.get_id()
+            session.permanent = True
             return redirect(url_for('index'))
         else:
             flash('Invalid username or password')
@@ -87,9 +87,9 @@ def create_bucket():
 @app.route('/logout')
 @login_required
 def logout():
+    session.pop('user_id', None)
     logout_user()
     return redirect(url_for('index'))
-
 
 @app.route('/buckets', methods=['GET'])
 @login_required
