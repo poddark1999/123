@@ -1,12 +1,11 @@
-from flask import render_template, flash, redirect, url_for, Flask
-from controllers.user_controller import UserController
+from flask import render_template, flash, redirect, url_for, Flask, request
 from flask_login import login_required, login_user, logout_user, LoginManager, current_user
 from models.bucket import Bucket
-from controllers.bucket_controller import BucketController
 from models.user import User
+from controllers.bucket_controller import BucketController
+from controllers.user_controller import UserController
 from views.forms.user_forms import LoginForm, RegisterForm
 from views.forms.bucket_forms import BucketForm
-from flask import request
 
 uc = UserController()
 uc.load_instances()
@@ -66,15 +65,6 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('index'))
     return render_template('/users/register.html', title='Register', form=form)
-
-@app.route('/shutdown', methods=['POST'])
-def shutdown():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-    return 'Server shutting down...'
-
 
 @app.route('/create_bucket', methods=['GET', 'POST'])
 @login_required
