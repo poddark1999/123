@@ -19,14 +19,7 @@ class BucketForm(FlaskForm):
 												  ('quarterly', 'quarterly'),
 												  ('half_yearly', 'semi-annual'),
 												  ('yearly', 'annually')])
-
-	icon = SelectField('Category', choices=[('🎓', '🎓Education'),
-												 ('🏥', '🏥Medical'),
-												 ('🥎', '🥎Sports'),
-												 ('✈️', '✈️Travel'),
-												 ('💻', '💻Technology'),
-												 ('🏠', '🏠House'),
-												 ('💸', '💸Taxes')])
+	icon = StringField('Icon', validators=[DataRequired()])
 	submit = SubmitField('Create')
 
 	def validate_deadline(self, deadline):

@@ -1,6 +1,7 @@
 <head>
 	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<script src="https://unpkg.com/@joeattardi/emoji-button"></script>
 </head>
 
 <h1>
@@ -60,16 +61,24 @@
 		{{ form.comment(size=32) }}
 	</p>
 	<p>
-		{{ form.icon.label }}<br>
-		{{ form.icon()}}
-		{% if form.icon.errors %}
-	<ul class="errors">
-		{% for error in form.icon.errors %}
-		<li>{{ error }}</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
+		{{ form.icon.label }}
+		{{ form.icon(size=32, id="emoji-input", oninput="checkLength()") }}
+		<ul id="emoji-constraints"></ul>
+			<li id="length">❌ Can up to 1-2 symbols</li>
+		</ul>
 	</p>
+	<script>
+	function checkLength() {
+		var emoji = document.getElementById('emoji-input').value;
+
+		// Check length
+		if (emoji.length >= 0 && emoji.length <= 4) {
+			document.getElementById('length').innerHTML="✅ Contains 1-2 symbols" ; }
+		else {
+			document.getElementById('length').innerHTML="❌ Must contain 1-2 symbols" ;
+		} // Check uppercase if
+	}
+	</script>
 	<p>
 		{{ form.frequency.label }}<br>
 		{{ form.frequency()}}
