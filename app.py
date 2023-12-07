@@ -1,11 +1,13 @@
 from flask import render_template, flash, redirect, url_for, Flask, request
 from flask_login import login_required, login_user, logout_user, LoginManager, current_user
+from datetime import timedelta
 from models.bucket import Bucket
 from models.user import User
 from controllers.bucket_controller import BucketController
 from controllers.user_controller import UserController
 from views.forms.user_forms import LoginForm, RegisterForm
 from views.forms.bucket_forms import BucketForm
+
 
 uc = UserController()
 uc.load_instances()
@@ -14,6 +16,7 @@ bc = BucketController()
 bc.load_instances()
 
 app = Flask(__name__, template_folder='views', static_folder='views/static')
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
 app.secret_key = 'kgakjgkjg'
 login_manager = LoginManager()
 login_manager.init_app(app)
