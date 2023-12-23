@@ -1,0 +1,96 @@
+<head>
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<h1>
+	Update bucket
+</h1>
+
+<form action="{{ url_for('edit_bucket', uuid=bucket.get_id()) }}" method="post">
+	{{ form.hidden_tag() }}
+	<p>
+		{{ form.name.label }}<br>
+		{{ form.name(size=32) }}
+		{% if form.name.errors %}
+	<ul class="errors">
+		{% for error in form.name.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p>
+		{{ form.goal.label }}<br>
+		<input type="range" id="goalSlider" name="goal" min="0" max="100000" value="{{ form.goal.data or 0 }}"
+			oninput="updateGoalInput(this.value)">
+		<input type="text" id="goalInput" value="{{ (form.goal.data or 0)|int|round|safe }}"
+			oninput="updateGoalSlider(this.value)">
+		{% if form.goal.errors %}
+	<ul class="errors">
+		{% for error in form.goal.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<script>
+		function updateGoalInput(val) {
+			document.getElementById('goalInput').value = parseInt(val).toLocaleString();
+		}
+
+		function updateGoalSlider(val) {
+			val = val.replace(/,/g, '');
+			document.getElementById('goalSlider').value = val;
+		}
+	</script>
+	<p>
+		{{ form.deadline.label }}<br>
+		{{ form.deadline() }}
+		{% if form.deadline.errors %}
+	<ul class="errors">
+		{% for error in form.deadline.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p>
+		{{ form.comment.label }}<br>
+		{{ form.comment(size=32) }}
+	</p>
+	<p>
+		{{ form.icon.label }}
+		{{ form.icon(size=32, id="emoji-input", oninput="checkLength()") }}
+	<ul id="emoji-constraints"></ul>
+	<li id="length">❌ Can up to 1-2 symbols</li>
+	</ul>
+	</p>
+	<script>
+		function checkLength() {
+			var emoji = document.getElementById('emoji-input').value;
+
+			// Check length
+			if (emoji.length >= 0 && emoji.length <= 4) {
+				document.getElementById('length').innerHTML = "✅ Contains 1-2 symbols";
+			}
+			else {
+				document.getElementById('length').innerHTML = "❌ Must contain 1-2 symbols";
+			} // Check uppercase if
+		}
+	</script>
+	<p>
+		{{ form.frequency.label }}<br>
+		{{ form.frequency()}}
+		{% if form.frequency.errors %}
+	<ul class="errors">
+		{% for error in form.frequency.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p><input type="submit" value="Update"></p>
+</form>
+
+<p><a href="{{ url_for('logout') }}">Logout</a></p>

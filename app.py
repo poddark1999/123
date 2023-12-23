@@ -1,6 +1,9 @@
 from flask import render_template, flash, redirect, url_for, Flask, request, session
 from flask_login import login_required, login_user, logout_user, LoginManager, current_user
 from datetime import timedelta
+import plotly.graph_objects as go
+from plotly.offline import plot
+from views.visualizations.bucket_visualization import bucket_completion
 from controllers.bucket_controller import BucketController
 from controllers.user_controller import UserController
 from views.forms.user_forms import LoginForm, RegisterForm
@@ -100,8 +103,32 @@ def list_buckets():
 @app.route('/buckets/<uuid>', methods=['GET'])
 @login_required
 def show_bucket(uuid):
+    bucket = bc.retrieve(uuid)
+    div = bucket_completion(bucket)
     return render_template('/buckets/show_bucket.html', title='Show Bucket',
+                           user=current_user, bucket=bucket, plot=div)
+
+@app.route('/buckets/<uuid>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_bucket(uuid):
+    bucket = bc.retrieve(uuid)
+    form = BucketForm(obj=bucket)
+    if form.validate_on_submit():
+        form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon']}
+        bc.update_bucket(bucket_uuid=uuid, **form_data)
+        bc.export_instances()
+        flash('Congratulations, you have edited a bucket!')
+        return redirect(url_for('show_bucket', uuid=uuid))
+    return render_template('/buckets/edit_bucket.html', title='Edit Bucket', form=form,
                            user=current_user, bucket=bc.retrieve(uuid))
+
+@app.route('/buckets/<uuid>/delete', methods=['GET'])
+@login_required
+def delete_bucket(uuid):
+    bc.delete_bucket(uuid)
+    bc.export_instances()
+    flash('Congratulations, you have deleted a bucket!')
+    return redirect(url_for('list_buckets'))
 
 if __name__ == '__main__':
 	uc.load_instances()

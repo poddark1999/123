@@ -55,8 +55,7 @@ class BucketController(ModelController):
             if bucket.uuid == bucket_uuid:
                 return bucket
 
-    @staticmethod
-    def update_bucket(bucket_uuid, **kwargs):
+    def update_bucket(self, bucket_uuid, **kwargs):
         '''
         Updates attributes of a given bucket.
 
@@ -71,10 +70,13 @@ class BucketController(ModelController):
             :return: Updated bucket instance or None.
             :rtype: Bucket or None
         '''
-        pass
+        for bucket in self.all:
+            if bucket.uuid == bucket_uuid:
+                for key, value in kwargs.items():
+                    setattr(bucket, key, value)
+                return bucket
 
-    @staticmethod
-    def delete_bucket(bucket_uuid):
+    def delete_bucket(self, bucket_uuid):
         '''
         Deletes a bucket based on its UUID.
 
@@ -88,7 +90,10 @@ class BucketController(ModelController):
             :return: True if Bucket was successfully deleted.
             :rtype: bool
         '''
-        pass
+        for bucket in self.all:
+            if bucket.uuid == bucket_uuid:
+                self.all.remove(bucket)
+                return True
 
     def list_buckets(self, user_uuid):
         '''
