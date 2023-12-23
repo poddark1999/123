@@ -44,16 +44,13 @@ class Bucket(Model):
         self.comment = attributes.get('comment', None)
         self.complete = False
         self.icon = attributes.get('icon', None)
-
+        self.currency = attributes.get('currency', 'EUR')
+        self.creation_date = attributes.get('creation_date', datetime.now())
         #create a list of accepted frequencies
         self.frequency = attributes.get('frequency',None)
         if self.frequency not in Bucket.valid_frequencies and self.frequency != None:
             raise ValueError(f"Invalid frequency: {self.frequency}. \
 Must be one of {', '.join([key for key in Bucket.valid_frequencies])}")
-        if 'creation_date' not in attributes:
-            self.__creation_date = datetime.now()
-        else:
-            self.__creation_date = attributes['creation_date']
         if 'uuid' not in attributes:
             super().__init__()
         else:
@@ -112,7 +109,7 @@ Must be one of {', '.join([key for key in Bucket.valid_frequencies])}")
         '''
         self.complete = True
 
-    def check_deadline(self):
+    def update_deadline(self):
         '''
         Method to check if the deadline for a bucket has passed.
         If the bucket is recurrent, the deadline is updated to the next deadline,

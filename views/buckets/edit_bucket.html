@@ -45,6 +45,17 @@
 		}
 	</script>
 	<p>
+		{{ form.currency.label }}<br>
+		{{ form.currency()}}
+		{% if form.currency.errors %}
+	<ul class="errors">
+		{% for error in form.currency.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p>
 		{{ form.deadline.label }}<br>
 		{{ form.deadline() }}
 		{% if form.deadline.errors %}

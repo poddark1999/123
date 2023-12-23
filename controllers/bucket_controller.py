@@ -28,7 +28,8 @@ class BucketController(ModelController):
             :return: Newly created bucket instance or relevant error message.
         '''
         bucket = Bucket(name=name, goal=goal, deadline=deadline,
-                        user_uuid=user_uuid, comment=comment, icon=icon)
+                        user_uuid=user_uuid, comment=comment, icon=icon,
+                        currency='EUR', frequency=frequency)
         self.all.append(bucket)
 
     def export_instances(self):
