@@ -8,12 +8,14 @@
 <body>
 	<div class="card">
 		<h1>{{ bucket.name }}</h1>
-		{{ plot|safe }}
-		<p>Goal: {{ bucket.goal }}</p>
+		<div class="chart-animation">
+			{{ plot|safe }}
+		</div>
+		<p>Goal: {{ bucket.currency }} {{ bucket.goal|int }}</p>
 		<p>Deadline: {{ bucket.deadline }}</p>
-		<p>Current Amount: {{ bucket.current_amount }}</p>
+		<p>Allocated: {{ bucket.currency }} {{ bucket.current_amount|int }}</p>
 		<p>Comment: {{ bucket.comment }}</p>
-		<p>Created: {{ bucket.created }}</p>
+		<p>Created: {{ bucket.creation_date }}</p>
 	</div>
 	<p>
 		<div class="flex-container">

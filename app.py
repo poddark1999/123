@@ -80,7 +80,7 @@ def create_bucket():
     """
     form = BucketForm()
     if form.validate_on_submit():
-        form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon']}
+        form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon', 'currency']}
         bc.create_bucket(**form_data, **{'user_uuid': current_user.uuid})
         bc.export_instances()
         flash('Congratulations, you have created a bucket!')

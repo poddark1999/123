@@ -117,3 +117,16 @@ textarea {
 	max-width: fit-content;
 }
 
+@keyframes chartFadeIn {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+.chart-animation {
+	animation-name: chartFadeIn;
+	animation-duration: 2s;
+}
