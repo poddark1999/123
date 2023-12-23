@@ -6,7 +6,7 @@ class BucketController(ModelController):
     Controller class for managing operations related to Buckets.
     '''
     all = []
-    def create_bucket(self, name, goal, deadline, user_uuid, frequency, icon=None,comment=None):
+    def create_bucket(self, name, goal, deadline, user_uuid, frequency, icon='',comment='', currency='EUR'):
         '''
         Creates a new bucket.
 
@@ -38,7 +38,6 @@ class BucketController(ModelController):
     def load_instances(self):
         return super().load_instances('Bucket', 'buckets.csv', Bucket, Bucket.data_types)
 
-    @staticmethod
     def retrieve_bucket(self, bucket_uuid):
         '''
         Retrieves a bucket based on its UUID.

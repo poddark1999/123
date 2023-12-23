@@ -26,9 +26,6 @@ class ModelController:
     to provide specific functionality for the associated model.
     """
 
-    def __init__(self) -> None:
-        self.all = []
-
     def create(self, **attributes):
         """
         Creating a new instance
@@ -129,6 +126,7 @@ class ModelController:
         '''
         Class method to load instances from a csv file
         '''
+        self.all = []
         # load the csv file
         path_to_file = os.path.join('data', csv)
         ## check if file exists
