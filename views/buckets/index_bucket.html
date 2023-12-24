@@ -15,8 +15,8 @@
 		{% for bucket in buckets %}
 		<div class="bucket-card">
 			<h2>{{ bucket.icon }}{{ bucket.name }}</h2>
-			<p><i class="fas fa-bullseye"></i> Goal: {{ bucket.goal }}</p>
-			<p><i class="far fa-calendar-alt"></i> Deadline: {{ bucket.deadline }}</p>
+			<p><i class="fas fa-bullseye"></i> Goal: {{ bucket.currency }} {{bucket.goal|int|format_thousands }} </p>
+			<p><i class="far fa-calendar-alt"></i> Deadline: {{ bucket.deadline |format_date }}</p>
 			<p><i class="fas fa-sync-alt"></i> Frequency: {{ bucket.frequency }}</p>
 			<p><i class="far fa-comment"></i> Comment: {{ bucket.comment }}</p>
 			<!-- Add more bucket details here -->

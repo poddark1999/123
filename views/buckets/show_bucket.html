@@ -11,11 +11,11 @@
 		<div class="chart-animation">
 			{{ plot|safe }}
 		</div>
-		<p>Goal: {{ bucket.currency }} {{ bucket.goal|int }}</p>
-		<p>Deadline: {{ bucket.deadline }}</p>
-		<p>Allocated: {{ bucket.currency }} {{ bucket.current_amount|int }}</p>
+		<p>Goal: {{ bucket.currency }} {{ bucket.goal|int|format_thousands }}</p>
+		<p>Deadline: {{ bucket.deadline |format_date}}</p>
+		<p>Allocated: {{ bucket.currency }} {{ bucket.current_amount|int|format_thousands }}</p>
 		<p>Comment: {{ bucket.comment }}</p>
-		<p>Created: {{ bucket.creation_date }}</p>
+		<p>Created: {{ bucket.creation_date | format_date}}</p>
 	</div>
 	<p>
 		<div class="flex-container">

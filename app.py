@@ -1,5 +1,6 @@
 from flask import render_template, flash, redirect, url_for, Flask, request, session
 from flask_login import login_required, login_user, logout_user, LoginManager, current_user
+from jinja2 import Environment, select_autoescape
 from datetime import timedelta
 import plotly.graph_objects as go
 from plotly.offline import plot
@@ -9,6 +10,11 @@ from controllers.user_controller import UserController
 from views.forms.user_forms import LoginForm, RegisterForm
 from views.forms.bucket_forms import BucketForm
 
+def format_thousands(value):
+    return f'{value:,}'.replace(',', "'")
+
+def format_date(value):
+    return value.strftime('%d/%m/%Y')
 
 uc = UserController()
 uc.load_instances()
@@ -19,6 +25,8 @@ bc.load_instances()
 app = Flask(__name__, template_folder='views', static_folder='views/static')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
 app.secret_key = 'kgakjgkjg'
+app.jinja_env.filters['format_thousands'] = format_thousands
+app.jinja_env.filters['format_date'] = format_date
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -117,7 +125,6 @@ def edit_bucket(uuid):
         form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon']}
         bc.update_bucket(bucket_uuid=uuid, **form_data)
         bc.export_instances()
-        flash('Congratulations, you have edited a bucket!')
         return redirect(url_for('show_bucket', uuid=uuid))
     return render_template('/buckets/edit_bucket.html', title='Edit Bucket', form=form,
                            user=current_user, bucket=bc.retrieve(uuid))
@@ -127,7 +134,6 @@ def edit_bucket(uuid):
 def delete_bucket(uuid):
     bc.delete_bucket(uuid)
     bc.export_instances()
-    flash('Congratulations, you have deleted a bucket!')
     return redirect(url_for('list_buckets'))
 
 if __name__ == '__main__':
