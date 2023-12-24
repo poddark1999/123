@@ -1,6 +1,7 @@
 <head>
 	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<script src="{{ url_for('static', filename='interactive/validation.js') }}"></script>
 </head>
 
 <h1>
@@ -34,16 +35,6 @@
 	</ul>
 	{% endif %}
 	</p>
-	<script>
-		function updateGoalInput(val) {
-			document.getElementById('goalInput').value = parseInt(val).toLocaleString();
-		}
-
-		function updateGoalSlider(val) {
-			val = val.replace(/,/g, '');
-			document.getElementById('goalSlider').value = val;
-		}
-	</script>
 	<p>
 		{{ form.currency.label }}<br>
 		{{ form.currency()}}
@@ -73,23 +64,7 @@
 	<p>
 		{{ form.icon.label }}
 		{{ form.icon(size=32, id="emoji-input", oninput="checkLength()") }}
-	<ul id="emoji-constraints"></ul>
-	<li id="length">❌ Can up to 1-2 symbols</li>
-	</ul>
 	</p>
-	<script>
-		function checkLength() {
-			var emoji = document.getElementById('emoji-input').value;
-
-			// Check length
-			if (emoji.length >= 0 && emoji.length <= 4) {
-				document.getElementById('length').innerHTML = "✅ Contains 1-2 symbols";
-			}
-			else {
-				document.getElementById('length').innerHTML = "❌ Must contain 1-2 symbols";
-			} // Check uppercase if
-		}
-	</script>
 	<p>
 		{{ form.frequency.label }}<br>
 		{{ form.frequency()}}

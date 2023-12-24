@@ -3,9 +3,10 @@
 <head>
 	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<script src="{{ url_for('static', filename='interactive/modal.js') }}"></script>
 </head>
 
-<body>
+<body data-delete-url="{{ url_for('delete_bucket', uuid=bucket.get_id()) }}">
 	<div class="card">
 		<h1>{{ bucket.name }}</h1>
 		<div class="chart-animation">
@@ -34,19 +35,6 @@
 			</div>
 		</div>
 	</div>
-	<script>
-		function openModal() {
-			document.getElementById("myModal").style.display = "block";
-		}
-
-		function closeModal() {
-			document.getElementById("myModal").style.display = "none";
-		}
-
-		function deleteBucket() {
-			location.href = '{{ url_for('delete_bucket', uuid=bucket.get_id()) }}';
-		}
-	</script>
 	<a href="{{ url_for('list_buckets')}}">Go back to my buckets</a>
 	<a href="{{ url_for('index') }}">Back to homepage</a>
 

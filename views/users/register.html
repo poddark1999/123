@@ -1,6 +1,7 @@
 <head>
 	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<script src="{{ url_for('static', filename='interactive/validation.js') }}"></script>
 </head>
 
 <h1>
@@ -33,64 +34,12 @@
 	</ul>
 	</p>
 
-	<script>
-		function checkPassword() {
-			var password = document.getElementById('password').value;
-
-			// Check length
-			if (password.length >= 8 && password.length <= 30) {
-				document.getElementById('length').innerHTML = "✅ Must contain between 8-30 characters";
-			} else {
-				document.getElementById('length').innerHTML = "❌ Must contain between 8-30 characters";
-			}
-
-			// Check uppercase
-			if (/[A-Z]/.test(password)) {
-				document.getElementById('uppercase').innerHTML = "✅ Must contain at least an uppercase letter";
-			} else {
-				document.getElementById('uppercase').innerHTML = "❌ Must contain at least an uppercase letter";
-			}
-
-			// Check lowercase
-			if (/[a-z]/.test(password)) {
-				document.getElementById('lowercase').innerHTML = "✅ Must contain at least a lowercase letter";
-			} else {
-				document.getElementById('lowercase').innerHTML = "❌ Must contain at least a lowercase letter";
-			}
-
-			// Check number
-			if (/\d/.test(password)) {
-				document.getElementById('number').innerHTML = "✅ Must contain at least a number";
-			} else {
-				document.getElementById('number').innerHTML = "❌ Must contain at least a number";
-			}
-
-			// Check special character
-			if (/[!@#$%^&*()_+{}[\]:;<>,.?~\\-]/.test(password)) {
-				document.getElementById('special').innerHTML = "✅ Must contain at least a special character (!@#$%{}[]&*<>?+=,./)";
-			} else {
-				document.getElementById('special').innerHTML = "❌ Must contain at least a special character (!@#$%{}[]&*<>?+=,./)";
-			}
-		}
-	</script>
 	<p>
 		{{ form.password2.label }}<br>
 		{{ form.password2(id="password2", size=32, oninput="checkPasswordMatch()") }}
 		<span id="passwordMatch">❌ Passwords must match</span>
 	</p>
 
-	<script>
-		function checkPasswordMatch() {
-			var password = document.getElementById('password').value;
-			var password2 = document.getElementById('password2').value;
-
-			if (password === password2) {
-				document.getElementById('passwordMatch').innerHTML = "✅ Passwords match";
-			} else {
-				document.getElementById('passwordMatch').innerHTML = "❌ Passwords must match";
-			}
-		}
-	</script>
 	<p>{{ form.submit() }}</p>
 	<!--Add a login link -->
 	<p>Already registered? <a href="{{ url_for('login') }}">Click here to login.</a></p>
