@@ -32,11 +32,11 @@ class BucketController(ModelController):
                         currency='EUR', frequency=frequency)
         self.all.append(bucket)
 
-    def export_instances(self):
-        return super().export_instances(csv='buckets.csv', cls=Bucket)
+    def export_instances(self, load=False):
+        return super().export_instances(csv='buckets.csv', cls=Bucket, load=load)
 
-    def load_instances(self):
-        return super().load_instances('Bucket', 'buckets.csv', Bucket, Bucket.data_types)
+    def load_instances(self, cls=Bucket, csv='buckets.csv'):
+        return super().load_instances('Bucket', csv, cls, Bucket.data_types)
 
     @staticmethod
     def retrieve_bucket(self, bucket_uuid):

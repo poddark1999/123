@@ -13,8 +13,8 @@ class UserController(ModelController):
         self.all = []
         super().__init__()
 
-    def export_instances(self):
-        return super().export_instances(csv='users.csv', cls=User)
+    def export_instances(self, load=False):
+        return super().export_instances(csv='users.csv', cls=User, load=load)
 
     def load_instances(self):
         return super().load_instances('User', 'users.csv', User, User.data_types)

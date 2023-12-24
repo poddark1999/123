@@ -7,8 +7,7 @@ class TransactionController(ModelController):
     Controller class for managing operations related to Transactions.
     '''
     all = []
-    @staticmethod
-    def create_transaction(type_, amount, date, user_uuid,
+    def create_transaction(self, type_, amount, date, user_uuid,
                            description=None, recurrence=None, end_date=None):
         """
         Create a new transaction and save it.
@@ -22,7 +21,6 @@ class TransactionController(ModelController):
         :param end_date: Optional end date for recurring transactions.
         :return: Instance of the created transaction.
         """
-        # Logic for creating and saving the transaction goes here...
         pass
 
     @staticmethod

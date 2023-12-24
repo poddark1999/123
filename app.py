@@ -90,7 +90,7 @@ def create_bucket():
     if form.validate_on_submit():
         form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon', 'currency']}
         bc.create_bucket(**form_data, **{'user_uuid': current_user.uuid})
-        bc.export_instances()
+        bc.export_instances(load=True)
         flash('Congratulations, you have created a bucket!')
         return redirect(url_for('index'))
     return render_template('/buckets/create_bucket.html', title='Create Bucket', form=form)
@@ -124,7 +124,7 @@ def edit_bucket(uuid):
     if form.validate_on_submit():
         form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon']}
         bc.update_bucket(bucket_uuid=uuid, **form_data)
-        bc.export_instances()
+        bc.export_instances(load=True)
         return redirect(url_for('show_bucket', uuid=uuid))
     return render_template('/buckets/edit_bucket.html', title='Edit Bucket', form=form,
                            user=current_user, bucket=bc.retrieve(uuid))
@@ -133,7 +133,7 @@ def edit_bucket(uuid):
 @login_required
 def delete_bucket(uuid):
     bc.delete_bucket(uuid)
-    bc.export_instances()
+    bc.export_instances(load=True)
     return redirect(url_for('list_buckets'))
 
 if __name__ == '__main__':

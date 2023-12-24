@@ -26,9 +26,6 @@ class ModelController:
     to provide specific functionality for the associated model.
     """
 
-    def __init__(self) -> None:
-        self.all = []
-
     def create(self, **attributes):
         """
         Creating a new instance
@@ -113,22 +110,24 @@ class ModelController:
         """
         return self.all
 
-    def export_instances(self, csv='models.csv', cls=Model):
+    def export_instances(self, csv='models.csv', cls=Model, load=False):
         '''
         Class method to export instances to a csv file
         '''
         path_to_file = os.sep.join(['data', csv])
-        print([instance.__dict__ for instance in self.all])
         df = pd.DataFrame([instance.__dict__ for instance in self.all])
         # renaming columns of private attributes
         df.columns = [column.split('__')[-1] for column in df.columns]
         df.drop_duplicates(inplace=True)
         df.to_csv(path_to_file, index=False)
+        if load:
+            self.load_instances(cls=cls, csv=csv)
 
     def load_instances(self, name='Model', csv='models.csv',cls=Model, data_types=Model.data_types):
         '''
         Class method to load instances from a csv file
         '''
+        self.all = []
         # load the csv file
         path_to_file = os.path.join('data', csv)
         ## check if file exists
