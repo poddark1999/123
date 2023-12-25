@@ -150,6 +150,16 @@ def create_allocation(bucket_uuid):
 	return render_template('/transactions/allocations/create_allocation.html',
 						   title='Create Allocation', form=form, bucket=bucket)
 
+@app.route('/delete_allocation/<uuid>', methods=['GET'])
+@login_required
+def delete_allocation(uuid):
+    allocation = ac.retrieve(uuid)
+    ac.delete_allocation(uuid)
+    ac.export_instances(load=True)
+    bc.allocate_to_bucket(-allocation.amount, allocation.target_uuid)
+    bc.export_instances(load=True)
+    return redirect(url_for('show_bucket', uuid=allocation.target_uuid))
+
 if __name__ == '__main__':
 	uc.load_instances()
 	app.run(port=5000, debug=True)

@@ -120,6 +120,9 @@ class ModelController:
         Class method to export instances to a csv file
         '''
         path_to_file = os.sep.join(['data', csv])
+        if not self.all:
+            os.remove(path_to_file)
+            return
         df = pd.DataFrame([instance.__dict__ for instance in self.all])
         # renaming columns of private attributes
         df.columns = [column.split('__')[-1] for column in df.columns]

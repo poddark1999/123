@@ -26,6 +26,7 @@
 				<th>Amount</th>
 				<th>Date</th>
 				<th>Comment</th>
+				<th>Options</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -38,6 +39,11 @@
 				{% else %}
 					<td>-</td>
 				{% endif %}
+				<td>
+					<button type="button" onclick="location.href='{{ url_for('delete_allocation', uuid=allocation.get_id()) }}'">
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>

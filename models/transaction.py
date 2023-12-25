@@ -24,7 +24,7 @@ class Transaction(Model):
         if 'uuid' not in attributes:
             super().__init__()
         else:
-            self.__uuid = attributes['uuid']
+            self.uuid = attributes['uuid']
         self.user_uuid = attributes['user_uuid']
         self.note = attributes.get('note', None)
 
