@@ -38,7 +38,6 @@ class BucketController(ModelController):
     def load_instances(self, cls=Bucket, csv='buckets.csv'):
         return super().load_instances('Bucket', csv, cls, Bucket.data_types)
 
-    @staticmethod
     def retrieve_bucket(self, bucket_uuid):
         '''
         Retrieves a bucket based on its UUID.
@@ -111,7 +110,6 @@ class BucketController(ModelController):
         '''
         return filter(lambda bucket: bucket.user_uuid == user_uuid,  self.all)
 
-    @staticmethod
     def check_bucket_status(bucket_uuid):
         '''
         Checks the status of a bucket (e.g., how close it is to its goal, if it's expired, etc.).

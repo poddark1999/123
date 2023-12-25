@@ -16,9 +16,11 @@ def bucket_completion(bucket):
 			'font': {'size': 16}  # Set the font size and weight
 		},
 		width=500,
-		height=400
+		height=400,
+  		paper_bgcolor='rgba(240, 240, 240, 1)'# Set the background color to light blue
 	)
 	fig.update_traces(textinfo='percent', textposition='inside')
 	fig.update_layout(legend=dict(orientation="h"))
 
 	return plot(fig, output_type='div')
+
