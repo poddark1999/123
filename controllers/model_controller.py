@@ -25,6 +25,11 @@ class ModelController:
     Warning: Ensure that when inheriting from this class, override methods if necessary
     to provide specific functionality for the associated model.
     """
+    def __init__(self):
+        """
+        Constructor
+        """
+        self.load_instances()
 
     def create(self, **attributes):
         """

@@ -7,6 +7,7 @@ from plotly.offline import plot
 from views.visualizations.bucket_visualization import bucket_completion
 from controllers.bucket_controller import BucketController
 from controllers.user_controller import UserController
+from controllers.transaction_controller import IncomeController, AllocationController
 from views.forms.user_forms import LoginForm, RegisterForm
 from views.forms.bucket_forms import BucketForm
 
@@ -17,9 +18,9 @@ def format_date(value):
     return value.strftime('%d/%m/%Y')
 
 uc = UserController()
-uc.load_instances()
-
 bc = BucketController()
+ic = IncomeController()
+ac = AllocationController()
 
 app = Flask(__name__, template_folder='views', static_folder='views/static')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)

@@ -1,5 +1,5 @@
 from models.transaction import Income, Allocation
-from model_controller import ModelController
+from controllers.model_controller import ModelController
 from datetime import datetime
 
 
@@ -9,7 +9,6 @@ class IncomeController(ModelController):
     '''
     def __init__(self):
         super().__init__()
-        self.load_instances()
 
     def create_income(self, user_uuid: str, date: float | int,
                   note: str | None, frequency: str, start_date: datetime,
@@ -98,7 +97,6 @@ class AllocationController(ModelController):
     '''
     def __init__(self):
         super().__init__()
-        self.load_instances()
 
     def create_allocation(self, user_uuid: str, date: datetime,
                   note: str | None, target_uuid: str, amount: float | int):
