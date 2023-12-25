@@ -1,21 +1,14 @@
-from flask import render_template, flash, redirect, url_for, Flask, request, session
+from flask import render_template, flash, redirect, url_for, Flask, session
 from flask_login import login_required, login_user, logout_user, LoginManager, current_user
-from jinja2 import Environment, select_autoescape
 from datetime import timedelta
-import plotly.graph_objects as go
-from plotly.offline import plot
 from views.visualizations.bucket_visualization import bucket_completion
 from controllers.bucket_controller import BucketController
 from controllers.user_controller import UserController
 from controllers.transaction_controller import IncomeController, AllocationController
 from views.forms.user_forms import LoginForm, RegisterForm
 from views.forms.bucket_forms import BucketForm
-
-def format_thousands(value):
-    return f'{value:,}'.replace(',', "'")
-
-def format_date(value):
-    return value.strftime('%d/%m/%Y')
+from views.forms.transaction_forms import AllocationForm, IncomeForm
+from views.static.utils import format_thousands, format_date
 
 uc = UserController()
 bc = BucketController()
@@ -112,9 +105,11 @@ def list_buckets():
 @login_required
 def show_bucket(uuid):
     bucket = bc.retrieve(uuid)
+    allocations = ac.retrieve_allocations_by_bucket(uuid)
     div = bucket_completion(bucket)
     return render_template('/buckets/show_bucket.html', title='Show Bucket',
-                           user=current_user, bucket=bucket, plot=div)
+                           user=current_user, bucket=bucket,
+                           plot=div, allocations=allocations)
 
 @app.route('/buckets/<uuid>/edit', methods=['GET', 'POST'])
 @login_required
@@ -135,6 +130,20 @@ def delete_bucket(uuid):
     bc.delete_bucket(uuid)
     bc.export_instances(load=True)
     return redirect(url_for('list_buckets'))
+
+@app.route('/create_allocation/<user_uuid>/<bucket_uuid>', methods=['GET', 'POST'])
+@login_required
+def create_allocation(user_uuid, bucket_uuid):
+    """
+    Create a new allocation.
+    """
+    form = AllocationForm()
+    if form.validate_on_submit():
+        form_data = {key: value for key, value in form.data.items() if key in ['amount', 'comment']}
+        ac.create_allocation(**form_data, **{'user_uuid': user_uuid, 'target_uuid': bucket_uuid})
+        ac.export_instances(load=True)
+        return redirect(url_for('index'))
+    return render_template('/allocations/create_allocation.html', title='Create Allocation', form=form)
 
 if __name__ == '__main__':
 	uc.load_instances()
