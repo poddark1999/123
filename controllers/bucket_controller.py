@@ -5,7 +5,10 @@ class BucketController(ModelController):
     '''
     Controller class for managing operations related to Buckets.
     '''
-    all = []
+    def __init__(self):
+        super().__init__()
+        self.load_instances()
+
     def create_bucket(self, name, goal, deadline, user_uuid, frequency, icon=None,comment=None, currency='EUR'):
         '''
         Creates a new bucket.

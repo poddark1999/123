@@ -20,7 +20,6 @@ uc = UserController()
 uc.load_instances()
 
 bc = BucketController()
-bc.load_instances()
 
 app = Flask(__name__, template_folder='views', static_folder='views/static')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)

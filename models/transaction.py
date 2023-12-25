@@ -9,7 +9,7 @@ class Transaction(Model):
     Class to represent all possible types of transactions.
     '''
     data_types = {'uuid': str, 'user_uuid': str, 'amount': float | int,
-                  'note': str | None, 'date': datetime}
+                  'note': str | None}
 
     def __init__(self, **attributes):
         '''
@@ -20,49 +20,20 @@ class Transaction(Model):
         :param date: date of the transaction (default is the current date).
         :param note: any additional notes or comments about this transaction.
         '''
-        self.__amount = attributes['amount']
+        self.amount = attributes['amount']
         if 'uuid' not in attributes:
             super().__init__()
         else:
             self.__uuid = attributes['uuid']
         self.user_uuid = attributes['user_uuid']
-        self.date = attributes.get('date', datetime.now())
         self.note = attributes.get('note', None)
-
-    @property
-    def amount(self):
-        return self.__amount
-
-    ## TO DO
-    ## - Add a setter method for the amount attribute
-    ##  - this method will check that the amount which is added is non-negative and raise a ValueError
-    ##    if it is.
-
-
-
-#class RecurringExpense(Transaction): ------commented as it needs to be moved to buckets
-    '''
-    Represents recurring expenses.
-    '''
-
-#    def __init__(self, frequency, start_date=datetime.now(), expiry_date=None, is_paused=False):
-    '''
-        Constructor
-        :param frequency: frequency of the expense (daily/weekly/monthly/yearly).
-        :param start_date: starting date of the recurring expense.
-        :param expiry_date: end date of the recurring expense. Can be None if it's indefinite.
-        :param is_paused: boolean to indicate if the recurring expense is currently paused.
-        '''
-#        pass
-
 
 class Allocation(Transaction):
     '''
     Represents money allocations.
     '''
-    all = []
-    data_types = {'uuid': str, 'user_uuid': str, 'date': float | int,
-                  'note': str | None, 'target_uuid': str}
+    data_types = {'uuid': str, 'user_uuid': str, 'date': datetime,
+                  'note': str | None, 'target_uuid': str, 'amount': float | int}
 
     def __init__(self, **attributes):
         '''
@@ -71,16 +42,16 @@ class Allocation(Transaction):
         '''
         super().__init__(**attributes)
         self.target_uuid = attributes['target_uuid']
+        self.date = attributes.get('date', datetime.now())
 
 
 class Income(Transaction):
     '''
     Represents incomes.
     '''
-    all = []
-    data_types = {'uuid': str, 'user_uuid': str, 'date': float | int,
-                  'note': str | None, 'frequency': str, 'start_date': datetime,
-                  'source': str, 'end_date': None | datetime}
+    data_types = {'uuid': str, 'user_uuid': str, 'note': str | None,
+                  'frequency': str, 'start_date': datetime, 'note': str | None,
+                  'source': str, 'end_date': None | datetime, 'amount': float | int}
     def __init__(self, **attributes):
         '''
         Constructor
@@ -93,7 +64,7 @@ class Income(Transaction):
         self.source = attributes['source']
         self.start_date = attributes.get('start_date', datetime.now())
         self.end_date = attributes.get('end_date', None)
-        self.frequency = attributes.get('frequency', 'One-Time')
+        self.frequency = attributes.get('frequency', 'Unique')
 
 
 if __name__ == '__main__':
