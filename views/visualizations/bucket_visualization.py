@@ -23,4 +23,3 @@ def bucket_completion(bucket):
 	fig.update_layout(legend=dict(orientation="h"))
 
 	return plot(fig, output_type='div')
-

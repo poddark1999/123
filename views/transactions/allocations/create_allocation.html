@@ -1,0 +1,45 @@
+<head>
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<script src="{{ url_for('static', filename='interactive/validation.js') }}"></script>
+</head>
+
+<h1>
+	Create a new allocation
+</h1>
+
+<form action="{{ url_for('create_allocation', bucket_uuid=bucket.get_id())}}" method="post">
+	{{ form.hidden_tag() }}
+	<p>
+		{{ form.amount.label }}<br>
+		<input type="range" id="goalSlider" name="amount" min="0" max="100000" value="{{ form.amount.data or 0 }}"
+			oninput="updateGoalInput(this.value)">
+		<input type="text" id="goalInput" value="{{ (form.amount.data or 0)|int|round|safe }}"
+			oninput="updateGoalSlider(this.value)">
+		{% if form.amount.errors %}
+	<ul class="errors">
+		{% for error in form.goal.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p>
+		{{ form.date.label }}<br>
+		{{ form.date() }}
+		{% if form.date.errors %}
+	<ul class="errors">
+		{% for error in form.date.errors %}
+		<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	</p>
+	<p>
+		{{ form.note.label }}<br>
+		{{ form.note(size=32) }}
+	</p>
+	<p>{{ form.submit() }}</p>
+</form>
+
+<p><a href="{{ url_for('logout') }}">Logout</a></p>

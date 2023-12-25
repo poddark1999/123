@@ -11,14 +11,14 @@ class BucketForm(FlaskForm):
 	name = StringField('Name', validators=[DataRequired()])
 	goal = FloatField('Goal', validators=[DataRequired()])
 	currency = SelectField('Currency', choices=[('CHF','CHF'),
-     											('CNY', 'CNY'),
+												('CNY', 'CNY'),
 												('EUR', 'EUR'),
 												('INR', 'INR'),
 												('USD', 'USD')])
 	deadline = DateField('Deadline', validators=[DataRequired()])
 	comment = StringField('Comment')
 	frequency = SelectField('Frequency', choices=[('unique','non-recurring'),
-     											  ('weekly', 'weekly'),
+												  ('weekly', 'weekly'),
 												  ('2_weeks', 'biweekly'),
 												  ('monthly', 'monthly'),
 												  ('quarterly', 'quarterly'),

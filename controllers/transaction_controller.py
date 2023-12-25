@@ -148,7 +148,7 @@ class AllocationController(ModelController):
             if allocation.uuid == allocation_uuid:
                 return allocation
 
-    def list_allocations_by_user(self, user_uuid: str):
+    def retrieve_allocations_by_user(self, user_uuid: str):
         """
         List all allocations for a specific user.
 
@@ -157,7 +157,7 @@ class AllocationController(ModelController):
         """
         return filter(lambda allocation: allocation.user_uuid == user_uuid, self.all)
 
-    def list_allocations_by_bucket(self, target_uuid: str):
+    def retrieve_allocations_by_bucket(self, target_uuid: str):
         """
         List all allocations for a specific user.
 

@@ -18,12 +18,45 @@
 		<p>Comment: {{ bucket.comment }}</p>
 		<p>Created: {{ bucket.creation_date | format_date}}</p>
 	</div>
+	<h2>Allocations</h2>
+	{% if allocations %}
+	<table>
+		<thead>
+			<tr>
+				<th>Amount</th>
+				<th>Date</th>
+				<th>Comment</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for allocation in allocations %}
+			<tr>
+				<td>{{ bucket.currency }} {{ allocation.amount|int|format_thousands }}</td>
+				<td>{{ allocation.date|format_date }}</td>
+				{% if allocation.note %}
+					<td>{{ allocation.note }}</td>
+				{% else %}
+					<td>-</td>
+				{% endif %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<p>No allocation for this bucket yet</p>
+	{% endif %}
+
+	<button type="button" onclick="location.href='{{ url_for('create_allocation', bucket_uuid=bucket.get_id()) }}'">
+		<i class="fas fa-plus-circle"></i>
+	</button>
+
 	<p>
 		<div class="flex-container">
 			<button type="button" onclick="openModal()">Delete</button>
 			<button type="button" onclick="location.href='{{ url_for('edit_bucket', uuid=bucket.get_id()) }}'">Update</button>
 		</div>
 	</p>
+
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
