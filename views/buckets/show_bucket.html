@@ -8,7 +8,7 @@
 
 <body data-delete-url="{{ url_for('delete_bucket', uuid=bucket.get_id()) }}">
 	<div class="card">
-		<h1>{{ bucket.name }}</h1>
+		<h1>{{ bucket.icon }}{{ bucket.name }}</h1>
 		<div class="chart-animation">
 			{{ plot|safe }}
 		</div>

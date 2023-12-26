@@ -4,8 +4,10 @@ from plotly.offline import plot
 def bucket_completion(bucket):
 	labels = ['Allocated amount', 'Remaining Amount']
 	values = [bucket.current_amount, bucket.goal - bucket.current_amount]
+	colors = ['#7FB800', '#FFB400']  # Specify the colors for the sections
 
-	fig = go.Figure(data=[go.Pie(labels=labels, values=values, hoverinfo='label+percent')])
+	fig = go.Figure(data=[go.Pie(labels=labels, values=values, hoverinfo='label+percent', marker=dict(colors=colors))])
+
 	fig.update_layout(
 		title={
 			'text': "State of completion",
