@@ -140,11 +140,12 @@ def create_allocation(bucket_uuid):
 	"""
 	bucket = bc.retrieve(bucket_uuid)
 	form = AllocationForm()
+	allocations = ac.retrieve_allocations_by_bucket(bucket_uuid)
 	if form.validate_on_submit():
 		form_data = {key: value for key, value in form.data.items() if key in ['date', 'amount', 'note']}
 		ac.create_allocation(**form_data, **{'user_uuid': current_user.get_id(), 'target_uuid': bucket_uuid})
 		ac.export_instances(load=True)
-		bc.allocate_to_bucket(form_data['amount'], bucket_uuid)
+		bc.update_amount_bucket(allocations, bucket_uuid)
 		bc.export_instances(load=True)
 		return redirect(url_for('show_bucket', uuid=bucket_uuid))
 	return render_template('/transactions/allocations/create_allocation.html',
@@ -154,11 +155,29 @@ def create_allocation(bucket_uuid):
 @login_required
 def delete_allocation(uuid):
     allocation = ac.retrieve(uuid)
+    allocations = ac.retrieve_allocations_by_bucket(allocation.target_uuid)
     ac.delete_allocation(uuid)
     ac.export_instances(load=True)
-    bc.allocate_to_bucket(-allocation.amount, allocation.target_uuid)
+    bc.update_amount_bucket(allocations, allocation.target_uuid)
     bc.export_instances(load=True)
     return redirect(url_for('show_bucket', uuid=allocation.target_uuid))
+
+
+@app.route('/edit_allocation/<uuid>', methods=['GET', 'POST'])
+@login_required
+def edit_allocation(uuid):
+	allocation = ac.retrieve(uuid)
+	form = AllocationForm(obj=allocation)
+	if form.validate_on_submit():
+		allocations = ac.retrieve_allocations_by_bucket(allocation.target_uuid)
+		form_data = {key: value for key, value in form.data.items() if key in ['date', 'amount', 'note']}
+		ac.update_allocation(allocation_uuid=uuid, **form_data)
+		ac.export_instances(load=True)
+		bc.update_amount_bucket(allocations, allocation.target_uuid)
+		bc.export_instances(load=True)
+		return redirect(url_for('show_bucket', uuid=allocation.target_uuid))
+	return render_template('/transactions/allocations/edit_allocation.html',
+						   title='Edit Allocation', form=form, allocation=allocation)
 
 if __name__ == '__main__':
 	uc.load_instances()

@@ -40,9 +40,15 @@
 					<td>-</td>
 				{% endif %}
 				<td>
-					<button type="button" onclick="location.href='{{ url_for('delete_allocation', uuid=allocation.get_id()) }}'">
-						<i class="fas fa-trash-alt"></i>
-					</button>
+					<div class="flex-container">
+						<button class="option-button" onclick="location.href='{{ url_for('edit_allocation', uuid=allocation.get_id()) }}'">
+						<i class="fas fa-edit"></i>
+						<button class="option-button"
+							onclick="location.href='{{ url_for('delete_allocation', uuid=allocation.get_id()) }}'">
+							<i class="fas fa-trash-alt"></i>
+						</button>
+					</div>
+
 				</td>
 			</tr>
 			{% endfor %}
@@ -52,7 +58,7 @@
 	<p>No allocation for this bucket yet</p>
 	{% endif %}
 
-	<button type="button" onclick="location.href='{{ url_for('create_allocation', bucket_uuid=bucket.get_id()) }}'">
+	<button class="plus-button" onclick="location.href='{{ url_for('create_allocation', bucket_uuid=bucket.get_id()) }}'">
 		<i class="fas fa-plus-circle"></i>
 	</button>
 

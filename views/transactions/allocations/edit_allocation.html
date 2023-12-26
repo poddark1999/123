@@ -5,10 +5,10 @@
 </head>
 
 <h1>
-	Create a new allocation
+	Edit allocation
 </h1>
 
-<form action="{{ url_for('create_allocation', bucket_uuid=bucket.get_id())}}" method="post">
+<form action="{{ url_for('edit_allocation', uuid=allocation.get_id())}}" method="post">
 	{{ form.hidden_tag() }}
 	<p>
 		{{ form.amount.label }}<br>

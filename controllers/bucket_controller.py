@@ -113,7 +113,7 @@ class BucketController(ModelController):
 		'''
 		return filter(lambda bucket: bucket.user_uuid == user_uuid,  self.all)
 
-	def allocate_to_bucket(self, allocation, bucket_uuid):
+	def update_amount_bucket(self, allocations, bucket_uuid):
 		'''
 		Allocates a given amount of money to a bucket.
 
@@ -128,9 +128,11 @@ class BucketController(ModelController):
 		------
 			:return: Updated bucket instance or relevant error message.
 		'''
+		total = sum(float(allocation.amount) for allocation in allocations)
 		for i, bucket in enumerate(self.all):
 			if bucket.uuid == bucket_uuid:
-				self.all[i].current_amount += float(allocation)
+				self.all[i].current_amount = float(bucket.goal) - float(total)
+
 
 
 	def check_bucket_status(bucket_uuid):
