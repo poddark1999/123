@@ -18,15 +18,14 @@
 		<div class="bucket-card">
 			<h2>{{ bucket.icon }}{{ bucket.name }}</h2>
 			<div class="progress-bar">
-				{% if bucket.current_amount < bucket.goal %}
+				{% if bucket.current_amount < bucket.goal and bucket.current_amount != 0 %}
 				<div class="progress" style="width: {{ (100*bucket.current_amount/bucket.goal) }}%">
 					<div class="progress-text">{{ (100*bucket.current_amount/bucket.goal) | round(2) }}%</div>
 				</div>
-				<div class="remaining" style="width: {{ (100-(100*bucket.current_amount/bucket.goal))}}"></div>
 				{% elif bucket.current_amount == bucket.goal %}
-				<div class="remaining" style="width: 100%"></div>
-				{% else %}
-				<div class="progress" style="width: 100%"></div>
+				<div class="progress" style="width: 100%">{{ (100*bucket.current_amount/bucket.goal) | round(2) }}%</div>
+				{% elif bucket.current_amount == 0 %}
+				<div class="remaining" style="width: 100%">0%</div>
 				{% endif %}
 			</div>
 			<p><i class="fas fa-bullseye"></i> Goal: {{ bucket.currency }} {{bucket.goal|int|format_thousands }} </p>

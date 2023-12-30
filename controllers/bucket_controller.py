@@ -131,7 +131,7 @@ class BucketController(ModelController):
 		total = sum(float(allocation.amount) for allocation in allocations)
 		for i, bucket in enumerate(self.all):
 			if bucket.uuid == bucket_uuid:
-				self.all[i].current_amount = float(bucket.goal) - float(total)
+				self.all[i].current_amount = total
 
 
 
