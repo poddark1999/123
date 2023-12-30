@@ -4,22 +4,37 @@
 <head>
 	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<script src="{{ url_for('static', filename='interactive/index.js') }}"></script>
 	<title>User's Buckets</title>
 </head>
 
 
 <body>
 	<h1>{{ user.username }}'s Buckets</h1>
+	<input type="text" id="search" placeholder="Search buckets...">
 	{% if buckets %}
 	<div class="card">
 		{% for bucket in buckets %}
 		<div class="bucket-card">
 			<h2>{{ bucket.icon }}{{ bucket.name }}</h2>
+			<div class="progress-bar">
+				{% if bucket.current_amount < bucket.goal %}
+				<div class="progress" style="width: {{ (100*bucket.current_amount/bucket.goal) }}%">
+					<div class="progress-text">{{ (100*bucket.current_amount/bucket.goal) | round(2) }}%</div>
+				</div>
+				<div class="remaining" style="width: {{ (100-(100*bucket.current_amount/bucket.goal))}}"></div>
+				{% elif bucket.current_amount == bucket.goal %}
+				<div class="remaining" style="width: 100%"></div>
+				{% else %}
+				<div class="progress" style="width: 100%"></div>
+				{% endif %}
+			</div>
 			<p><i class="fas fa-bullseye"></i> Goal: {{ bucket.currency }} {{bucket.goal|int|format_thousands }} </p>
 			<p><i class="far fa-calendar-alt"></i> Deadline: {{ bucket.deadline |format_date }}</p>
 			<p><i class="fas fa-sync-alt"></i> Frequency: {{ bucket.frequency }}</p>
 			<p><i class="far fa-comment"></i> Comment: {{ bucket.comment }}</p>
 			<!-- Add more bucket details here -->
+
 			<a href="{{ url_for('show_bucket', uuid=bucket.uuid) }}">View Details</a>
 		</div>
 		{% endfor %}

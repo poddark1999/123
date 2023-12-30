@@ -98,6 +98,7 @@ def logout():
 @app.route('/buckets', methods=['GET'])
 @login_required
 def list_buckets():
+
 	return render_template('/buckets/index_bucket.html', title='List Buckets',
 						   user=current_user,buckets=bc.list_buckets(current_user.get_id()))
 
