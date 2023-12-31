@@ -39,7 +39,10 @@
 		{{ form.note.label }}<br>
 		{{ form.note(size=32) }}
 	</p>
-	<p>{{ form.submit() }}</p>
+	<div class="flex-container">
+		<a href="{{ url_for('show_bucket', uuid=bucket.get_id()) }}" class="button">Cancel</a>
+		<input type="submit" value="Create">
+	</div>
 </form>
 
 <p><a href="{{ url_for('logout') }}">Logout</a></p>

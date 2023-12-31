@@ -12,17 +12,17 @@
 	{{ form.hidden_tag() }}
 	<p>
 		{{ form.amount.label }}<br>
-		<input type="range" id="goalSlider" name="amount" min="0" max="2000" value="{{ form.amount.data or 0 }}"
+		<input type="range" id="goalSlider" name="amount" min="0" max="{{ bucket.goal - bucket.current_amount + allocation.amount}}" value="{{ form.amount.data or 0 }}"
 			oninput="updateGoalInput(this.value)">
 		<input type="text" id="goalInput" value="{{ (form.amount.data or 0)|int|round|safe }}"
 			oninput="updateGoalSlider(this.value)">
 		{% if form.amount.errors %}
-	<ul class="errors">
-		{% for error in form.goal.errors %}
-		<li>{{ error }}</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
+		<ul class="errors">
+			{% for error in form.amount.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
 	</p>
 	<p>
 		{{ form.date.label }}<br>
@@ -39,7 +39,10 @@
 		{{ form.note.label }}<br>
 		{{ form.note(size=32) }}
 	</p>
-	<p><input type="submit" value="Update"></p>
+	<div class="flex-container">
+		<a href="{{ url_for('show_bucket', uuid=allocation.target_uuid) }}" class="button">Cancel</a>
+		<input type="submit" value="Update">
+	</div>
 </form>
 
 <p><a href="{{ url_for('logout') }}">Logout</a></p>

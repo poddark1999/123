@@ -170,7 +170,7 @@ def delete_allocation(uuid):
 def edit_allocation(uuid):
 	allocation = ac.retrieve(uuid)
 	bucket = bc.retrieve(allocation.target_uuid)
-	max_value = bucket.goal - bucket.current_amount
+	max_value = bucket.goal - bucket.current_amount + allocation.amount
 	form = AllocationForm(max_value=max_value, obj=allocation)
 	if form.validate_on_submit():
 		allocations = ac.retrieve_allocations_by_bucket(allocation.target_uuid)
@@ -181,7 +181,8 @@ def edit_allocation(uuid):
 		bc.export_instances(load=True)
 		return redirect(url_for('show_bucket', uuid=allocation.target_uuid))
 	return render_template('/transactions/allocations/edit_allocation.html',
-						   title='Edit Allocation', form=form, allocation=allocation)
+						   title='Edit Allocation', form=form, allocation=allocation,
+						   bucket=bucket)
 
 if __name__ == '__main__':
 	uc.load_instances()

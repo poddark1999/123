@@ -24,7 +24,8 @@ h1 {
 }
 
 button,
-input[type=submit] {
+input[type=submit],
+.button {
 	background-color: #00A6ED;
 	/* Green */
 	border: none;
@@ -39,7 +40,12 @@ input[type=submit] {
 	cursor: pointer;
 	border-radius: 12px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	font-family: 'Montserrat', sans-serif;
+}
 
+li {
+	font-size: 14px;
+	text-align:left
 }
 
 input[type=text],

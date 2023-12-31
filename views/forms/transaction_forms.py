@@ -19,7 +19,8 @@ class AllocationForm(FlaskForm):
     """
     def __init__(self, max_value, *args, **kwargs):
         super(AllocationForm, self).__init__(*args, **kwargs)
-        self.amount.validators.append(MaxValueValidator(max_value))
+        if not any(isinstance(v, MaxValueValidator) for v in self.amount.validators):
+            self.amount.validators.append(MaxValueValidator(max_value))
 
     amount = StringField('amount', validators=[DataRequired()])
     note = StringField('note')
