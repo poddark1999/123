@@ -40,3 +40,10 @@ class RegisterForm(FlaskForm):
     password = PasswordField('password', validators=[DataRequired(), strong_password_check])
     password2 = PasswordField('repeat password', validators=[DataRequired()])
     submit = SubmitField('register')
+
+class BalanceForm(FlaskForm):
+    """
+    Form for entering balance
+    """
+    balance = StringField('balance', validators=[DataRequired()])
+    submit = SubmitField('submit')

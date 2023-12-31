@@ -1,11 +1,11 @@
-from flask import render_template, flash, redirect, url_for, Flask, session
+from flask import render_template, flash, redirect, url_for, Flask, session, request
 from flask_login import login_required, login_user, logout_user, LoginManager, current_user
 from datetime import timedelta
 from views.visualizations.bucket_visualization import bucket_completion
 from controllers.bucket_controller import BucketController
 from controllers.user_controller import UserController
 from controllers.transaction_controller import IncomeController, AllocationController
-from views.forms.user_forms import LoginForm, RegisterForm
+from views.forms.user_forms import LoginForm, RegisterForm, BalanceForm
 from views.forms.bucket_forms import BucketForm
 from views.forms.transaction_forms import AllocationForm, IncomeForm
 from views.static.utils import format_thousands, format_date
@@ -32,8 +32,20 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def index():
+	if session.get('just_logged_in'):
+		session['just_logged_in'] = False
+		return redirect(url_for('enter_balance'))
 	return render_template('/users/index.html', title='Home',
 						   user=current_user)
+
+@app.route('/enter_balance', methods=['GET', 'POST'])
+@login_required
+def enter_balance():
+    form = BalanceForm()
+    if form.validate_on_submit():
+        # Logic to update the user's balance...
+        return redirect(url_for('index'))
+    return render_template('/users/enter_balance.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -45,17 +57,14 @@ def login():
 		# Check if the username and password are correct
 		# For example, using a hypothetical 'check_login' function
 		user = uc.check_login(form.username.data, form.password.data)
-		print(form.username.data)
-		print(form.password.data)
 		if user is not None:
 			# Log the user in
 			# And then redirect to another page
 			login_user(user)
+			session['just_logged_in'] = True
 			session['user_id'] = user.get_id()
 			session.permanent = True
-			return redirect(url_for('index'))
-		else:
-			flash('Invalid username or password')
+			return redirect(url_for('index') or request.args.get('next'))
 	return render_template('/users/login.html', title='Sign In', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])

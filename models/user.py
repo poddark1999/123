@@ -39,7 +39,7 @@ class User(Model, UserMixin):
     components together
     '''
     data_types = {'uuid': str, 'first_name': str, 'last_name': str,
-                  'username': str, 'password': str}
+                  'username': str, 'password': str, 'balance': float|int}
 
     def __init__(self, **attributes):
         '''
@@ -53,6 +53,7 @@ class User(Model, UserMixin):
         self.first_name = attributes['first_name']
         self.last_name = attributes['last_name']
         self.username = attributes['username']
+        self.balance = attributes.get('balance', 0)
         self.__password = attributes['password']
         if 'uuid' not in attributes:
             super().__init__()

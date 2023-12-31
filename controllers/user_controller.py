@@ -27,6 +27,7 @@ class UserController(ModelController):
         - last_name: str - Last name of the user.
         - username: str - Username chosen by the user.
         - password: str - Password chosen by the user.
+        - balance: float - Initial balance of the user.
 
         Returns:
         - User object if successfully created, None otherwise.
@@ -37,6 +38,19 @@ class UserController(ModelController):
             self.all.append(user)
             return user
         raise Exception('Password is not strong enough')
+
+    def user_balance(self, balance, user):
+        '''
+        Returns the balance of a given User object.
+
+        Params:
+        - user: User - The user whose balance needs to be returned.
+
+        Returns:
+        - float: The balance of the user.
+        '''
+        user.balance = balance
+        return user.balance
 
     @staticmethod
     def change_user_password(user, old_password, new_password):

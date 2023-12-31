@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<title>Enter your balance</title>
+</head>
+
+<body>
+	<form action="{{ url_for('enter_balance') }}" method="POST">
+		{{ form.hidden_tag() }}
+		<p>
+			{{ form.balance.label }}<br>
+			{{ form.balance() }}
+			{% if form.balance.errors %}
+		<ul class="errors">
+			{% for error in form.balance.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		</p>
+		<button type="submit">Submit</button>
+	</form>
+</body>
