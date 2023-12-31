@@ -12,13 +12,13 @@
 	{{ form.hidden_tag() }}
 	<p>
 		{{ form.amount.label }}<br>
-		<input type="range" id="goalSlider" name="amount" min="0" max="2000" value="{{ form.amount.data or 0 }}"
+		<input type="range" id="goalSlider" name="amount" min="0" max="{{ bucket.goal - bucket.current_amount }}" value="{{ form.amount.data or 0 }}"
 			oninput="updateGoalInput(this.value)">
 		<input type="text" id="goalInput" value="{{ (form.amount.data or 0)|int|round|safe }}"
-			oninput="updateGoalSlider(this.value)">
+			oninput="updateGoalSlider(this.value)" max="{{ bucket.goal - bucket.current_amount }}">
 		{% if form.amount.errors %}
 	<ul class="errors">
-		{% for error in form.goal.errors %}
+		{% for error in form.amount.errors %}
 		<li>{{ error }}</li>
 		{% endfor %}
 	</ul>

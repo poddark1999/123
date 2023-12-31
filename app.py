@@ -140,7 +140,8 @@ def create_allocation(bucket_uuid):
 	Create a new allocation.
 	"""
 	bucket = bc.retrieve(bucket_uuid)
-	form = AllocationForm()
+	max_value = bucket.goal - bucket.current_amount
+	form = AllocationForm(max_value=max_value)
 	allocations = ac.retrieve_allocations_by_bucket(bucket_uuid)
 	if form.validate_on_submit():
 		form_data = {key: value for key, value in form.data.items() if key in ['date', 'amount', 'note']}
@@ -168,7 +169,9 @@ def delete_allocation(uuid):
 @login_required
 def edit_allocation(uuid):
 	allocation = ac.retrieve(uuid)
-	form = AllocationForm(obj=allocation)
+	bucket = bc.retrieve(allocation.target_uuid)
+	max_value = bucket.goal - bucket.current_amount
+	form = AllocationForm(max_value=max_value, obj=allocation)
 	if form.validate_on_submit():
 		allocations = ac.retrieve_allocations_by_bucket(allocation.target_uuid)
 		form_data = {key: value for key, value in form.data.items() if key in ['date', 'amount', 'note']}
