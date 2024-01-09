@@ -78,7 +78,6 @@ def register():
 		user = uc.create_user(**form_data)
 		uc.export_instances()
 		login_user(user)
-		flash('Congratulations, you are now a registered user!')
 		return redirect(url_for('index'))
 	return render_template('/users/register.html', title='Register', form=form)
 
@@ -93,7 +92,6 @@ def create_bucket():
 		form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon', 'currency']}
 		bc.create_bucket(**form_data, **{'user_uuid': current_user.uuid})
 		bc.export_instances(load=True)
-		flash('Congratulations, you have created a bucket!')
 		return redirect(url_for('index'))
 	return render_template('/buckets/create_bucket.html', title='Create Bucket', form=form)
 

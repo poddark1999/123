@@ -10,9 +10,7 @@ class IncomeController(ModelController):
     def __init__(self):
         super().__init__()
 
-    def create_income(self, user_uuid: str, date: float | int,
-                  note: str | None, frequency: str, start_date: datetime,
-                  source: str, end_date: None | datetime, amount: float | int):
+    def create_income(self, **attributes):
         """
         Creates a new income.
 
@@ -31,24 +29,18 @@ class IncomeController(ModelController):
         ------
         :return: Newly created income instance.
         """
-        income = Income(user_uuid=user_uuid, note=note, frequency=frequency,
-                        start_date=start_date, source=source, end_date=end_date)
-        self.all.append(income)
+        return super().create(obj=Income, **attributes)
 
 
-    def update_income(self, income_uuid, **kwargs):
+    def update_income(self, income_uuid, **attributes):
         """
         Update details of a specific income.
 
         :param income_uuid: UUID of the income to update.
-        :param kwargs: Updated fields for the income.
+        :param attributes: Updated fields for the income.
         :return: Updated income instance or relevant error.
         """
-        for income in self.all:
-            if income.uuid == income_uuid:
-                for key, value in kwargs.items():
-                    setattr(income, key, value)
-                return income
+        return super().update(income_uuid, **attributes)
 
     def delete_income(self, income_uuid):
         """
@@ -57,10 +49,7 @@ class IncomeController(ModelController):
         :param income_uuid: UUID of the income to delete.
         :return: Confirmation of deletion or relevant error.
         """
-        for income in self.all:
-            if income.uuid == income_uuid:
-                self.all.remove(income)
-                return True
+        return super().delete(income_uuid)
 
     def retrieve_income(self, income_uuid):
         """
@@ -69,9 +58,7 @@ class IncomeController(ModelController):
         :param income_uuid: UUID of the income to retrieve.
         :return: income instance or None if not found.
         """
-        for income in self.all:
-            if income.uuid == income_uuid:
-                return income
+        return super().retrieve(income_uuid)
 
     def list_incomes(self, user_uuid:str):
         """
@@ -98,8 +85,7 @@ class AllocationController(ModelController):
     def __init__(self):
         super().__init__()
 
-    def create_allocation(self, user_uuid: str, date: datetime,
-                  note: str | None, target_uuid: str, amount: float | int):
+    def create_allocation(self, **attributes):
         """
         Create a new allocation.
 
@@ -109,23 +95,16 @@ class AllocationController(ModelController):
         :param target_uuid: UUID of the target bucket where the money will be allocated.
         :return: The created allocation instance.
         """
-        allocation = Allocation(user_uuid=user_uuid, date=date,
-                                note=note, target_uuid=target_uuid,
-                                amount=amount)
-        self.all.append(allocation)
-        return allocation
+        return super().create(obj=Allocation, **attributes)
 
-    def update_allocation(self, allocation_uuid, **kwargs):
+    def update_allocation(self, allocation_uuid, **attributes):
         """
         Update an existing allocation.
 
         :param allocation_uuid: UUID of the allocation to update.
-        :param kwargs: Keyword arguments representing the attributes to update.
+        :param attributes: Keyword arguments representing the attributes to update.
         """
-        allocation = self.retrieve_allocation(allocation_uuid)
-        if allocation:
-            for key, value in kwargs.items():
-                setattr(allocation, key, value)
+        return super().update(allocation_uuid, **attributes)
 
     def delete_allocation(self, allocation_uuid):
         """
@@ -133,9 +112,7 @@ class AllocationController(ModelController):
 
         :param allocation_uuid: UUID of the allocation to delete.
         """
-        allocation = self.retrieve_allocation(allocation_uuid)
-        if allocation:
-            self.all.remove(allocation)
+        return super().delete(allocation_uuid)
 
     def retrieve_allocation(self, allocation_uuid):
         """
@@ -144,9 +121,7 @@ class AllocationController(ModelController):
         :param allocation_uuid: UUID of the allocation to retrieve.
         :return: Allocation instance or None if not found.
         """
-        for allocation in self.all:
-            if allocation.uuid == allocation_uuid:
-                return allocation
+        return super().retrieve(allocation_uuid)
 
     def retrieve_allocations_by_user(self, user_uuid: str):
         """

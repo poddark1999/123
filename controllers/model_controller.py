@@ -31,7 +31,7 @@ class ModelController:
         """
         self.load_instances()
 
-    def create(self, **attributes):
+    def create(self, obj=Model, **attributes):
         """
         Creating a new instance
 
@@ -49,7 +49,9 @@ class ModelController:
             This method should be overridden in specific controllers if additional functionality or validation
             is needed during the creation of a model instance.
         """
-        pass
+        model = obj(**attributes)
+        self.all.append(model)
+        return model
 
     def retrieve(self, model_uuid):
         """
@@ -86,7 +88,11 @@ class ModelController:
         -------
         Updated model instance or None if not found.
         """
-        pass
+        for model in self.all:
+            if model.uuid == model_uuid:
+                for key, value in attributes.items():
+                    setattr(model, key, value)
+                return model
 
     def delete(self, model_uuid):
         """
@@ -102,7 +108,10 @@ class ModelController:
         :return: True if deletion was successful, False otherwise.
         :rtype: bool
         """
-        pass
+        for model in self.all:
+            if model.uuid == model_uuid:
+                self.all.remove(model)
+                return True
 
     def list_all(self):
         """

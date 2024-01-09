@@ -12,13 +12,7 @@ class UserController(ModelController):
     def __init__(self):
         super().__init__()
 
-    def export_instances(self, load=False):
-        return super().export_instances(csv='users.csv', cls=User, load=load)
-
-    def load_instances(self):
-        return super().load_instances('User', 'users.csv', User, User.data_types)
-
-    def create_user(self, first_name, last_name, username, password):
+    def create_user(self, **attributes):
         '''
         Creates a new User object if the provided password is strong enough.
 
@@ -32,11 +26,8 @@ class UserController(ModelController):
         Returns:
         - User object if successfully created, None otherwise.
         '''
-        if is_strong(password):
-            user = User(first_name=first_name, last_name=last_name,
-                        username=username, password=password)
-            self.all.append(user)
-            return user
+        if is_strong(attributes['password']):
+            return super().create(obj=User, **attributes)
         raise Exception('Password is not strong enough')
 
     def user_balance(self, balance, user):
@@ -51,6 +42,12 @@ class UserController(ModelController):
         '''
         user.balance = balance
         return user.balance
+
+    def export_instances(self, load=False):
+        return super().export_instances(csv='users.csv', cls=User, load=load)
+
+    def load_instances(self):
+        return super().load_instances('User', 'users.csv', User, User.data_types)
 
     @staticmethod
     def change_user_password(user, old_password, new_password):

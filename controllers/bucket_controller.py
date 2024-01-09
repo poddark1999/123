@@ -9,7 +9,7 @@ class BucketController(ModelController):
 		super().__init__()
 		self.load_instances()
 
-	def create_bucket(self, name, goal, deadline, user_uuid, frequency, icon=None,comment=None, currency='EUR'):
+	def create_bucket(self, **attributes):
 		'''
 		Creates a new bucket.
 
@@ -30,16 +30,7 @@ class BucketController(ModelController):
 		------
 			:return: Newly created bucket instance or relevant error message.
 		'''
-		bucket = Bucket(name=name, goal=goal, deadline=deadline,
-						user_uuid=user_uuid, comment=comment, icon=icon,
-						currency='EUR', frequency=frequency)
-		self.all.append(bucket)
-
-	def export_instances(self, load=False):
-		return super().export_instances(csv='buckets.csv', cls=Bucket, load=load)
-
-	def load_instances(self, cls=Bucket, csv='buckets.csv'):
-		return super().load_instances('Bucket', csv, cls, Bucket.data_types)
+		return super().create(**attributes, obj=Bucket)
 
 	def retrieve_bucket(self, bucket_uuid):
 		'''
@@ -54,11 +45,9 @@ class BucketController(ModelController):
 		------
 			:return: Bucket instance corresponding to the provided UUID or relevant error message.
 		'''
-		for bucket in self.all:
-			if bucket.uuid == bucket_uuid:
-				return bucket
+		return super().retrieve(bucket_uuid)
 
-	def update_bucket(self, bucket_uuid, **kwargs):
+	def update_bucket(self, bucket_uuid, **attributes):
 		'''
 		Updates attributes of a given bucket.
 
@@ -73,11 +62,7 @@ class BucketController(ModelController):
 			:return: Updated bucket instance or None.
 			:rtype: Bucket or None
 		'''
-		for bucket in self.all:
-			if bucket.uuid == bucket_uuid:
-				for key, value in kwargs.items():
-					setattr(bucket, key, value)
-				return bucket
+		return super().update(bucket_uuid, **attributes)
 
 	def delete_bucket(self, bucket_uuid):
 		'''
@@ -93,10 +78,7 @@ class BucketController(ModelController):
 			:return: True if Bucket was successfully deleted.
 			:rtype: bool
 		'''
-		for bucket in self.all:
-			if bucket.uuid == bucket_uuid:
-				self.all.remove(bucket)
-				return True
+		return super().delete(bucket_uuid)
 
 	def list_buckets(self, user_uuid):
 		'''
@@ -112,6 +94,12 @@ class BucketController(ModelController):
 			:return: List of bucket instances associated with the user or relevant error message.
 		'''
 		return filter(lambda bucket: bucket.user_uuid == user_uuid,  self.all)
+
+	def export_instances(self, load=False):
+			return super().export_instances(csv='buckets.csv', cls=Bucket, load=load)
+
+	def load_instances(self, cls=Bucket, csv='buckets.csv'):
+		return super().load_instances('Bucket', csv, cls, Bucket.data_types)
 
 	def update_amount_bucket(self, allocations, bucket_uuid):
 		'''
