@@ -31,19 +31,21 @@ class IncomeForm(FlaskForm):
 	"""
 	Form for creating an income
 	"""
+	source = StringField('source', validators=[DataRequired()])
 	amount = StringField('amount', validators=[DataRequired()])
-	frequency = SelectField('frequency', choices=[('unique','non-recurring'),
+	frequency = SelectField('frequency', choices=[('non-recurring','non-recurring'),
 												  ('weekly', 'weekly'),
-												  ('2_weeks', 'biweekly'),
+												  ('biweekly', 'biweekly'),
 												  ('monthly', 'monthly'),
 												  ('quarterly', 'quarterly'),
-												  ('half_yearly', 'semi-annual'),
-												  ('yearly', 'annually')])
-	comment = StringField('comment')
-	currency = SelectField('Currency', choices=[('CHF','CHF'),
+												  ('semi-annual', 'semi-annual'),
+												  ('yearly', 'yearly')])
+	note = StringField('comment')
+	currency = SelectField('currency', choices=[('CHF','CHF'),
 												('CNY', 'CNY'),
 												('EUR', 'EUR'),
 												('INR', 'INR'),
 												('USD', 'USD')])
-	date = DateField('Deadline', validators=[DataRequired()])
+	start_date = DateField('start date', validators=[DataRequired()])
+	end_date = DateField('end date', validators=[DataRequired()])
 	submit = SubmitField('create income')

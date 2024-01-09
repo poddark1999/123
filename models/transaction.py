@@ -50,8 +50,8 @@ class Income(Transaction):
     Represents incomes.
     '''
     data_types = {'uuid': str, 'user_uuid': str, 'note': str | None,
-                  'frequency': str, 'start_date': datetime, 'note': str | None,
-                  'source': str, 'end_date': None | datetime, 'amount': float | int}
+                  'frequency': str, 'start_date': datetime, 'source': str, 
+                  'end_date': datetime, 'amount': float | int, 'currency': str}
     def __init__(self, **attributes):
         '''
         Constructor
@@ -65,6 +65,7 @@ class Income(Transaction):
         self.start_date = attributes.get('start_date', datetime.now())
         self.end_date = attributes.get('end_date', None)
         self.frequency = attributes.get('frequency', 'Unique')
+        self.currency = attributes.get('currency', 'EUR')
 
 
 if __name__ == '__main__':

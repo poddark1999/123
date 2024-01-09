@@ -13,10 +13,15 @@ def convert(amount, from_currency, to_currency):
 	return float(rate) * amount
 
 def format_thousands(value):
-    return f'{value:,}'.replace(',', "'")
+	return f'{value:,.0f}'.replace(',', "'")
 
 def format_date(value):
-    return value.strftime('%d/%m/%Y')
+	if value is None:
+		return '-'
+	return value.strftime('%d/%m/%Y')
+
+def format_comment(value):
+	return value or '-'
 
 if __name__ == '__main__':
 	print(convert(100, 'CHF', 'USD'))

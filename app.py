@@ -8,7 +8,7 @@ from controllers.transaction_controller import IncomeController, AllocationContr
 from views.forms.user_forms import LoginForm, RegisterForm, BalanceForm
 from views.forms.bucket_forms import BucketForm
 from views.forms.transaction_forms import AllocationForm, IncomeForm
-from views.static.utils import format_thousands, format_date
+from views.static.utils import format_thousands, format_date, format_comment
 
 uc = UserController()
 bc = BucketController()
@@ -20,6 +20,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
 app.secret_key = 'kgakjgkjg'
 app.jinja_env.filters['format_thousands'] = format_thousands
 app.jinja_env.filters['format_date'] = format_date
+app.jinja_env.filters['format_comment'] = format_comment
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -90,7 +91,7 @@ def create_bucket():
 	form = BucketForm()
 	if form.validate_on_submit():
 		form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon', 'currency']}
-		bc.create_bucket(**form_data, **{'user_uuid': current_user.uuid})
+		bc.create_bucket(**form_data, user_uuid=current_user.uuid)
 		bc.export_instances(load=True)
 		return redirect(url_for('index'))
 	return render_template('/buckets/create_bucket.html', title='Create Bucket', form=form)
@@ -152,7 +153,7 @@ def create_allocation(bucket_uuid):
 	allocations = ac.retrieve_allocations_by_bucket(bucket_uuid)
 	if form.validate_on_submit():
 		form_data = {key: value for key, value in form.data.items() if key in ['date', 'amount', 'note']}
-		ac.create_allocation(**form_data, **{'user_uuid': current_user.get_id(), 'target_uuid': bucket_uuid})
+		ac.create_allocation(**form_data, user_uuid=current_user.get_id(), target_uuid=bucket_uuid)
 		ac.export_instances(load=True)
 		bc.update_amount_bucket(allocations, bucket_uuid)
 		bc.export_instances(load=True)
@@ -190,6 +191,61 @@ def edit_allocation(uuid):
 	return render_template('/transactions/allocations/edit_allocation.html',
 						   title='Edit Allocation', form=form, allocation=allocation,
 						   bucket=bucket)
+
+
+@app.route('/index_income', methods=['GET'])
+@login_required
+def list_incomes():
+	for income in ic.list_incomes(current_user.get_id()):
+		print(income.__dict__)
+	return render_template('/transactions/incomes/index_income.html', title='List Incomes',
+						   user=current_user, incomes=ic.list_incomes(current_user.get_id()))
+
+
+@app.route('/create_income', methods=['GET', 'POST'])
+@login_required
+
+def create_income():
+	"""
+	Create a new income.
+	"""
+	form = IncomeForm()
+	if form.validate_on_submit():
+		form_data = {key: value for key, value in form.data.items() if key in ['start_date', 'end_date',
+                                                                         'currency', 'amount', 'note', 'frequency', 'source']}
+		ic.create_income(**form_data, user_uuid=current_user.get_id())
+		ic.export_instances(load=True)
+		return redirect(url_for('index'))
+	return render_template('/transactions/incomes/create_income.html',
+						   title='Create Income', form=form)
+ 
+@app.route('/show_income/<uuid>', methods=['GET', 'POST'])
+@login_required
+def show_income(uuid):
+	income = ic.retrieve(uuid)
+	return render_template('/transactions/incomes/show_income.html', title='Show Income',
+						   user=current_user, income=income)
+
+@app.route('/edit_income/<uuid>', methods=['GET', 'POST'])
+@login_required
+def edit_income(uuid):
+	income = ic.retrieve(uuid)
+	form = IncomeForm(obj=income)
+	if form.validate_on_submit():
+		form_data = {key: value for key, value in form.data.items() if key in ['start_date', 'end_date',
+                                                                         'currency', 'amount', 'note', 'frequency', 'source']}
+		ic.update_income(income_uuid=uuid, **form_data)
+		ic.export_instances(load=True)
+		return redirect(url_for('show_income', uuid=uuid))
+	return render_template('/transactions/incomes/edit_income.html', title='Edit Income',
+						   form=form, user=current_user, income=income)
+
+@app.route('/delete_income/<uuid>', methods=['GET'])
+@login_required
+def delete_income(uuid):
+	ic.delete_income(uuid)
+	ic.export_instances(load=True)
+	return redirect(url_for('list_incomes'))
 
 if __name__ == '__main__':
 	uc.load_instances()

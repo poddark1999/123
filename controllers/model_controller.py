@@ -15,6 +15,8 @@ def convert_type(value, type_):
     elif type_ in [float, float | int]:
         return float(value)
     elif type_ == datetime:
+        if value == None:
+            return None
         return datetime.fromisoformat(value)
 
 class ModelController:

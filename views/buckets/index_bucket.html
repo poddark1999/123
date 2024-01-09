@@ -31,7 +31,7 @@
 			<p><i class="fas fa-bullseye"></i> Goal: {{ bucket.currency }} {{bucket.goal|int|format_thousands }} </p>
 			<p><i class="far fa-calendar-alt"></i> Deadline: {{ bucket.deadline |format_date }}</p>
 			<p><i class="fas fa-sync-alt"></i> Frequency: {{ bucket.frequency }}</p>
-			<p><i class="far fa-comment"></i> Comment: {{ bucket.comment }}</p>
+			<p><i class="far fa-comment"></i> Comment: {{ bucket.comment |format_comment}}</p>
 			<!-- Add more bucket details here -->
 
 			<a href="{{ url_for('show_bucket', uuid=bucket.uuid) }}">View Details</a>

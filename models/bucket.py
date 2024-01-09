@@ -17,13 +17,13 @@ class Bucket(Model):
                    'frequency':str | None, 'complete':bool, 'icon': str | None,
                    'currency': str}
 
-    valid_frequencies = {"unique": None,
+    valid_frequencies = {"non-recurring": None,
                          "weekly": timedelta(days=7),
-                         "2_weeks": timedelta(weeks=2),
+                         "biweekly": timedelta(weeks=2),
                          "monthly": timedelta(days=30),
                          "quarterly": timedelta(days=91),
-                         "half_yearly" : timedelta(days=180),
-                         "annually": timedelta(days=365)}
+                         "semi-annually" : timedelta(days=180),
+                         "yearly": timedelta(days=365)}
 
     def __init__(self, **attributes):
         '''
@@ -118,7 +118,7 @@ Must be one of {', '.join([key for key in Bucket.valid_frequencies])}")
 
         '''
         current_datetime = datetime.now()
-        if (self.frequency is not None) and (self.deadline < current_datetime):
+        if self.frequency != 'non-recurring' and self.deadline < current_datetime:
             self.deadline += Bucket.valid_frequencies[self.frequency]
 
 

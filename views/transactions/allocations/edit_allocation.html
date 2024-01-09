@@ -14,7 +14,7 @@
 		{{ form.amount.label }}<br>
 		<input type="range" id="goalSlider" name="amount" min="0" max="{{ bucket.goal - bucket.current_amount + allocation.amount}}" value="{{ form.amount.data or 0 }}"
 			oninput="updateGoalInput(this.value)">
-		<input type="text" id="goalInput" value="{{ (form.amount.data or 0)|int|round|safe }}"
+		<input type="text" id="goalInput" value="{{ (form.amount.data or 0)|format_thousands }}"
 			oninput="updateGoalSlider(this.value)">
 		{% if form.amount.errors %}
 		<ul class="errors">

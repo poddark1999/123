@@ -17,13 +17,13 @@ class BucketForm(FlaskForm):
 												('USD', 'USD')])
 	deadline = DateField('Deadline', validators=[DataRequired()])
 	comment = StringField('Comment')
-	frequency = SelectField('Frequency', choices=[('unique','non-recurring'),
+	frequency = SelectField('Frequency', choices=[('non-recurring','non-recurring'),
 												  ('weekly', 'weekly'),
-												  ('2_weeks', 'biweekly'),
+												  ('biweekly', 'biweekly'),
 												  ('monthly', 'monthly'),
 												  ('quarterly', 'quarterly'),
-												  ('half_yearly', 'semi-annual'),
-												  ('yearly', 'annually')])
+												  ('semi-annual', 'semi-annual'),
+												  ('yearly', 'yearly')])
 	icon = StringField('Icon', validators=[DataRequired()])
 	submit = SubmitField('Create')
 
