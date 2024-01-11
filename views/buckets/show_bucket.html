@@ -7,6 +7,14 @@
 </head>
 
 <body data-delete-url="{{ url_for('delete_bucket', uuid=bucket.get_id()) }}">
+	<nav>
+		<ul class="navbar">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li><a href="{{ url_for('list_buckets') }}">My Buckets</a></li>
+			<li><a href="{{ url_for('list_incomes') }}">My Incomes</a></li>
+			<li><a href="{{ url_for('logout') }}">Logout</a></li>
+		</ul>
+	</nav>
 	<div class="card">
 		<h1>{{ bucket.icon }}{{ bucket.name }}</h1>
 		<div class="chart-animation">
@@ -80,8 +88,6 @@
 			</div>
 		</div>
 	</div>
-	<a href="{{ url_for('list_buckets')}}">Go back to my buckets</a>
-	<a href="{{ url_for('index') }}">Back to homepage</a>
 
 </body>
 </html>

@@ -10,6 +10,14 @@
 
 
 <body>
+	<nav>
+		<ul class="navbar">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li><a href="{{ url_for('list_buckets') }}">My Buckets</a></li>
+			<li><a href="{{ url_for('list_incomes') }}">My Incomes</a></li>
+			<li><a href="{{ url_for('logout') }}">Logout</a></li>
+		</ul>
+	</nav>
 	<h1>{{ user.username }}'s Buckets</h1>
 	<input type="text" id="search" placeholder="Search buckets...">
 	{% if buckets %}
@@ -43,7 +51,6 @@
 	{% endif %}
 
 	<a href="{{ url_for('create_bucket') }}">Create a new bucket</a>
-	<a href="{{ url_for('index') }}">Back to homepage</a>
 </body>
 
 </html>

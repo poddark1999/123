@@ -3,6 +3,14 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<script src="{{ url_for('static', filename='interactive/validation.js') }}"></script>
 </head>
+<nav>
+	<ul class="navbar">
+		<li><a href="{{ url_for('index') }}">Home</a></li>
+		<li><a href="{{ url_for('list_buckets') }}">My Buckets</a></li>
+		<li><a href="{{ url_for('list_incomes') }}">My Incomes</a></li>
+		<li><a href="{{ url_for('logout') }}">Logout</a></li>
+	</ul>
+</nav>
 
 <h1>
 	Update bucket
@@ -78,5 +86,3 @@
 	</p>
 	<p><input type="submit" value="Update"></p>
 </form>
-
-<p><a href="{{ url_for('logout') }}">Logout</a></p>

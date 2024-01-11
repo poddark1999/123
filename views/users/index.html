@@ -8,12 +8,17 @@
 </head>
 
 <body>
+	
+	<nav>
+		<ul class="navbar">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li><a href="{{ url_for('list_buckets') }}">My Buckets</a></li>
+			<li><a href="{{ url_for('list_incomes') }}">My Incomes</a></li>
+			<li><a href="{{ url_for('logout') }}">Logout</a></li>
+		</ul>
+	</nav>
 	<h1>Welcome, {{ user.username }}!</h1>
-	<p>Your email is {{ user.email }}</p>
-
-	<p><a href="{{ url_for('logout') }}">Logout</a></p>
-	<p><a href="{{ url_for('list_buckets') }}">View my buckets</a></p>
-	<p><a href="{{ url_for('list_incomes') }}">View my incomes</a></p>
+	
 </body>
 
 </html>

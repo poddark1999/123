@@ -24,6 +24,7 @@ app.jinja_env.filters['format_comment'] = format_comment
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+balance = None
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -33,18 +34,23 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def index():
+	global balance
+	allocations = ac.retrieve_allocations_by_user(current_user.get_id())
 	if session.get('just_logged_in'):
 		session['just_logged_in'] = False
 		return redirect(url_for('enter_balance'))
 	return render_template('/users/index.html', title='Home',
-						   user=current_user)
+						   user=current_user, balance=balance, allocations=allocations)
 
 @app.route('/enter_balance', methods=['GET', 'POST'])
 @login_required
 def enter_balance():
+    global balance
     form = BalanceForm()
+    if balance is not None:
+        return redirect(url_for('index'))
     if form.validate_on_submit():
-        # Logic to update the user's balance...
+        balance = form.balance.data
         return redirect(url_for('index'))
     return render_template('/users/enter_balance.html', form=form)
 
