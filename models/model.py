@@ -12,8 +12,9 @@ class Model:
 
         Params
         ------
-            :param **attributes: attributes of the model
-            :type **attributes: dict
+            :param **attributes: attributes of the Model
+                these attributes include:
+                    - uuid: unique identifier of the model.
         '''
         self.uuid = attributes.get('uuid', uuid4())
 

@@ -15,10 +15,12 @@ class Transaction(Model):
         '''
         Constructor
 
-        :param amount: amount of the transaction.
-        :param user_uuid: unique identifier of the user associated with this transaction.
-        :param date: date of the transaction (default is the current date).
-        :param note: any additional notes or comments about this transaction.
+        :param **attributes: dictionary with the different attributes of a Transaction.
+            these attributes include:
+                - uuid: unique identifier of the transaction.
+                - user_uuid: unique identifier of the user associated with this transaction.
+                - date: date of the transaction (default is the current date).
+                - note: any additional notes or comments about this transaction.
         '''
         self.amount = attributes['amount']
         if 'uuid' not in attributes:
@@ -38,7 +40,13 @@ class Allocation(Transaction):
     def __init__(self, **attributes):
         '''
         Constructor
-        :param target_uuid: unique identifier of the bucket where the money will be allocated.
+        :**attributes: dictionary with the different attributes of an Allocation.
+            these attributes include:
+                - uuid: unique identifier of the allocation.
+                - user_uuid: unique identifier of the user associated with this allocation.
+                - date: date of the allocation (default is the current date).
+                - note: any additional notes or comments about this allocation.
+                - target_uuid: unique identifier of the bucket for which the allocation is made.
         '''
         super().__init__(**attributes)
         self.target_uuid = attributes['target_uuid']
@@ -55,10 +63,17 @@ class Income(Transaction):
     def __init__(self, **attributes):
         '''
         Constructor
-        :param source: source of the income (e.g., "Salary", "Freelance").
-        :param frequency: frequency of the income (default is "One-Time").
-        :param start_date: date when the income starts (relevant for recurring incomes).
-        :param end_date: date when the income ends (can be None if it's indefinite).
+        :**attributes: dictionary with the different attributes of an Income.
+            these attributes include:
+                - uuid: unique identifier of the income.
+                - user_uuid: unique identifier of the user associated with this income.
+                - note: any additional notes or comments about this income.
+                - frequency: frequency of the income (default is 'One-Time').
+                - start_date: date of the first income (default is the current date).
+                - end_date: date of the last income (default is None).
+                - source: source of the income.
+                - amount: amount of the income.
+                - currency: currency of the income (default is 'EUR').
         '''
         super().__init__(**attributes)
         self.source = attributes['source']

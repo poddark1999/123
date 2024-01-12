@@ -17,11 +17,13 @@ class UserController(ModelController):
         Creates a new User object if the provided password is strong enough.
 
         Params:
-        - first_name: str - First name of the user.
-        - last_name: str - Last name of the user.
-        - username: str - Username chosen by the user.
-        - password: str - Password chosen by the user.
-        - balance: float - Initial balance of the user.
+        :param attributes: dict - A dictionary containing the attributes of the user.
+            attributes include:
+                - first_name: str - First name of the user.
+                - last_name: str - Last name of the user.
+                - username: str - Username chosen by the user.
+                - password: str - Password chosen by the user.
+                - balance: float - Initial balance of the user.
 
         Returns:
         - User object if successfully created, None otherwise.

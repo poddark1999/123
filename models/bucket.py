@@ -2,8 +2,6 @@ from models.model import Model
 from datetime import datetime
 from datetime import timedelta
 
-from typing import Union
-
 class Bucket(Model):
     '''
     The Bucket class models the goals that a user aims to attain, represented as "buckets".
@@ -27,12 +25,25 @@ class Bucket(Model):
 
     def __init__(self, **attributes):
         '''
-        Constructor method
+        Constructor method for the Bucket class. Additionally, 
+        upon creation of a bucket, an attribute creation_date
+        records when a bucket is created and an attribute 
+        completed to track the status.
 
         Params
         ------
-            :param **attributes: attributes of the bucket
-            :type **attributes: dict
+            :param **attributes: attributes of the Bucket
+                these attributes include:
+                - uuid: unique identifier of the bucket.
+                - name: name of the bucket.
+                - goal: target amount of the bucket.
+                - user_uuid: unique identifier of the user associated with this bucket.
+                - deadline: date of the bucket's deadline.
+                - current_amount: current amount of the bucket.
+                - comment: any additional notes or comments about this bucket.
+                - frequency: frequency of the bucket.
+                - icon: icon of the bucket.
+                - currency: currency of the bucket.
 
         Additionally, upon creation of a bucket, an attribute creation_date
         records when a bucket is created and an attribute completed to track the status.

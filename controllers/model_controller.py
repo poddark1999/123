@@ -6,7 +6,18 @@ from typing import Union
 
 def convert_type(value, type_):
     '''
-    Typecasting function
+    Typecasting function to allow smooth loading of instances from csv files
+    
+    Params
+    ------
+        :param value: value to be typecasted
+        :type value: str
+        :param type_: type to be typecasted to
+        :type type_: type
+        
+    Returns
+    -------
+        :return: typecasted value
     '''
     if type_ == str:
         return str(value)
@@ -41,7 +52,9 @@ class ModelController:
         ------
             :param **attributes: attributes of the model
             :type **attributes: dict
-
+            :param obj: model class to be instantiated
+            :type obj: class
+        
         Returns
         -------
 
@@ -129,6 +142,16 @@ class ModelController:
     def export_instances(self, csv='models.csv', cls=Model, load=False):
         '''
         Class method to export instances to a csv file
+        
+        Params
+        ------
+            :param csv: name of the csv file
+            :type csv: str
+            :param cls: class of the model
+            :type cls: class
+            :param load: whether to load the instances from the csv file
+            :type load: bool
+        
         '''
         path_to_file = os.sep.join(['data', csv])
         if not self.all:
@@ -144,7 +167,20 @@ class ModelController:
 
     def load_instances(self, name='Model', csv='models.csv',cls=Model, data_types=Model.data_types):
         '''
-        Class method to load instances from a csv file
+        Class method to load instances from a csv file and 
+        stores them in the all attribute of the controller
+        
+        Params
+        ------
+            :param name: name of the class
+            :type name: str
+            :param csv: name of the csv file
+            :type csv: str
+            :param cls: class of the model
+            :type cls: class
+            :param data_types: dictionary of data types of the attributes of the class
+            :type data_types: dict
+        
         '''
         self.all = []
         # load the csv file

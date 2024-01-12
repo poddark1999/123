@@ -8,12 +8,14 @@ from controllers.transaction_controller import IncomeController, AllocationContr
 from views.forms.user_forms import LoginForm, RegisterForm, BalanceForm
 from views.forms.bucket_forms import BucketForm
 from views.forms.transaction_forms import AllocationForm, IncomeForm
-from views.static.utils import format_thousands, format_date, format_comment
+from views.static.utils import format_thousands, format_date, format_comment, free_money_calculation
 
 uc = UserController()
 bc = BucketController()
 ic = IncomeController()
 ac = AllocationController()
+
+
 
 app = Flask(__name__, template_folder='views', static_folder='views/static')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
@@ -24,33 +26,65 @@ app.jinja_env.filters['format_comment'] = format_comment
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-balance = None
 
 @login_manager.user_loader
 def load_user(user_id):
-# Return the User object whose ID matches the given user_id
+	"""
+	Load a user.
+ 	
+  	Params
+	------
+		:param user_id: The unique identifier of the user.
+		:type user_id: str
+  
+	Returns
+	-------
+		:return: User instance or None if not found.
+   	"""
 	return uc.retrieve(user_id)
 
 @app.route('/')
 @login_required
 def index():
-	global balance
-	allocations = ac.retrieve_allocations_by_user(current_user.get_id())
+	"""
+	Home page. Redirects to the enter_balance page if 
+	the user has not entered their balance yet.
+
+	Login is required to view this page.
+
+	Returns
+	-------
+	:return: Home page.
+	"""
+	user = uc.retrieve(current_user.get_id())
+	allocations = ac.retrieve_allocations_by_user(user.uuid)
+	income = ic.next_income(user.uuid)
+	free_money = free_money_calculation(user, allocations, income)
 	if session.get('just_logged_in'):
 		session['just_logged_in'] = False
 		return redirect(url_for('enter_balance'))
 	return render_template('/users/index.html', title='Home',
-						   user=current_user, balance=balance, allocations=allocations)
+						   user=current_user, user=user, allocations=allocations, 
+         free_money=free_money)
 
 @app.route('/enter_balance', methods=['GET', 'POST'])
 @login_required
 def enter_balance():
-    global balance
+    """
+    Enter the user's balance.
+	
+    Login is required to view this page.
+    
+    Returns
+    -------
+    :return: Enter balance page.
+    """
+    user = uc.retrieve(current_user.get_id())
     form = BalanceForm()
-    if balance is not None:
+    if user.balance != 0:
         return redirect(url_for('index'))
     if form.validate_on_submit():
-        balance = form.balance.data
+        user.balance = form.balance.data
         return redirect(url_for('index'))
     return render_template('/users/enter_balance.html', form=form)
 
@@ -58,6 +92,8 @@ def enter_balance():
 def login():
 	"""
 	Login a user.
+	
+	Redirects to the home page if the user is already logged in.
 	"""
 	form = LoginForm()
 	if form.validate_on_submit():

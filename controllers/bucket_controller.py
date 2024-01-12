@@ -15,17 +15,17 @@ class BucketController(ModelController):
 
 		Params
 		------
-			:param name: name of the bucket
-			:type name: str
-			:param goal: monetary goal to reach for the desired bucket
-			:type goal: float, int
-			:param deadline: date by which the goal of a given bucket should be reached
-			:type deadline: datetime object
-			:param user_uuid: uuid of the user creating the bucket
-			:type user_uuid: str
-			:param comment: additional comment regarding a bucket
-			:type comment: str, optional
-
+			:param **attributes: attributes of the Bucket
+				these attributes include:
+					- name: name of the bucket.
+					- goal: target amount of the bucket.
+					- user_uuid: unique identifier of the user associated with this bucket.
+					- deadline: date of the bucket's deadline.
+					- current_amount: current amount of the bucket.
+					- comment: any additional notes or comments about this bucket.
+					- frequency: frequency of the bucket.
+					- icon: icon of the bucket.
+					- currency: currency of the bucket.
 		Return
 		------
 			:return: Newly created bucket instance or relevant error message.
@@ -55,8 +55,8 @@ class BucketController(ModelController):
 		------
 			:param bucket_uuid: uuid of the bucket to be updated
 			:type bucket_uuid: str
-			:param kwargs: a dictionary of attributes to be updated with their new values
-			:type kwargs: dict
+			:param attributes: a dictionary of attributes to be updated with their new values
+			:type attributes: dict
 		Return
 		------
 			:return: Updated bucket instance or None.
