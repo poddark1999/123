@@ -2,7 +2,6 @@ from models.model import Model
 import pandas as pd
 import os
 from datetime import datetime
-from typing import Union
 
 def convert_type(value, type_):
     '''

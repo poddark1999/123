@@ -1,5 +1,6 @@
 from models.transaction import Income, Allocation
 from controllers.model_controller import ModelController
+from models.bucket import Bucket
 from datetime import datetime
 
 
@@ -110,12 +111,25 @@ class IncomeController(ModelController):
         for income in incomes:
             if next_income is None:
                 next_income = income
-            elif income.date < next_income.date:
+            elif income.start_date < next_income.start_date:
                 next_income = income
         return next_income
 
+    def update_income_dates(self):
+        """
+        Update the dates of all incomes using the intervals defined in the valid frequencies.
+        """
+        for i in range(len(self.all)):
+            if self.all[i].frequency == "non-recurring":
+                continue
+            while self.all[i].start_date + Bucket.valid_frequencies[self.all[i].frequency] < datetime.today():
+                self.all[i].start_date += Bucket.valid_frequencies[self.all[i].frequency]
+        
+    
     def load_instances(self, name='Income', csv='incomes.csv', cls=Income, data_types=Income.data_types):
-        return super().load_instances(name, csv, cls, data_types)
+        instances = super().load_instances(name, csv, cls, data_types)
+        self.update_income_dates()
+        return instances
 
     def export_instances(self, load=False):
         return super().export_instances(csv='incomes.csv', cls=Income, load=load)

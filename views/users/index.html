@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 
 <head>
@@ -19,6 +18,15 @@
 	</nav>
 	<h1>Welcome, {{ user.username }}!</h1>
 	
-</body>
+	<div class="round-display">
+		<span class="display-label">Free Money</span>
+		<span class="display-value">{{ free_money }}</span>
+	</div>
 
+	<div class="balance-section">
+		<p>Balance: EUR {{ user.balance}}</p>
+	</div>
+	<button type="button" onclick="location.href='{{ url_for('enter_balance') }}'">Modify Balance</button>
+	
+</body>
 </html>

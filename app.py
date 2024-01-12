@@ -54,7 +54,7 @@ def index():
 
 	Returns
 	-------
-	:return: Home page.
+		:return: Home page.
 	"""
 	user = uc.retrieve(current_user.get_id())
 	allocations = ac.retrieve_allocations_by_user(user.uuid)
@@ -64,7 +64,7 @@ def index():
 		session['just_logged_in'] = False
 		return redirect(url_for('enter_balance'))
 	return render_template('/users/index.html', title='Home',
-						   user=current_user, user=user, allocations=allocations, 
+						   user=current_user, allocations=allocations, 
          free_money=free_money)
 
 @app.route('/enter_balance', methods=['GET', 'POST'])
@@ -77,12 +77,10 @@ def enter_balance():
     
     Returns
     -------
-    :return: Enter balance page.
+    	:return: Enter balance page.
     """
     user = uc.retrieve(current_user.get_id())
     form = BalanceForm()
-    if user.balance != 0:
-        return redirect(url_for('index'))
     if form.validate_on_submit():
         user.balance = form.balance.data
         return redirect(url_for('index'))
@@ -94,6 +92,10 @@ def login():
 	Login a user.
 	
 	Redirects to the home page if the user is already logged in.
+
+	Returns
+	-------
+		:return: Login page.
 	"""
 	form = LoginForm()
 	if form.validate_on_submit():
@@ -114,6 +116,12 @@ def login():
 def register():
 	"""
 	Register a new user.
+
+	Redirects to the home page if the user is already logged in.
+
+	Returns
+	-------
+		:return: Register page.
 	"""
 	form = RegisterForm()
 	if form.validate_on_submit():
@@ -129,6 +137,12 @@ def register():
 def create_bucket():
 	"""
 	Create a new bucket.
+
+	Login is required to view this page.
+
+	Returns
+	-------
+		:return: Create bucket page.
 	"""
 	form = BucketForm()
 	if form.validate_on_submit():
@@ -141,9 +155,18 @@ def create_bucket():
 @app.route('/logout')
 @login_required
 def logout():
-	session.pop('user_id', None)
-	logout_user()
-	return redirect(url_for('index'))
+    """
+    Logout a user.
+    
+    Login is required to view this page.
+    
+	Returns
+	-------
+		:return: Home page.
+    """
+    session.pop('user_id', None)
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route('/buckets', methods=['GET'])
 @login_required
@@ -155,39 +178,91 @@ def list_buckets():
 @app.route('/buckets/<uuid>', methods=['GET'])
 @login_required
 def show_bucket(uuid):
-	bucket = bc.retrieve(uuid)
-	allocations = ac.retrieve_allocations_by_bucket(uuid)
-
-	div = bucket_completion(bucket)
-	return render_template('/buckets/show_bucket.html', title='Show Bucket',
+    """
+    Show a bucket.
+    
+    Login is required to view this page.
+    
+    Params
+    ------
+		:param uuid: The unique identifier of the bucket.
+		:type uuid: str
+    
+    Returns
+    -------
+    	:return: Show bucket page.
+    """
+    bucket = bc.retrieve(uuid)
+    allocations = ac.retrieve_allocations_by_bucket(uuid)
+    div = bucket_completion(bucket)
+    return render_template('/buckets/show_bucket.html', title='Show Bucket',
 						   user=current_user, bucket=bucket,
 						   plot=div, allocations=allocations)
 
 @app.route('/buckets/<uuid>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_bucket(uuid):
-	bucket = bc.retrieve(uuid)
-	form = BucketForm(obj=bucket)
-	if form.validate_on_submit():
-		form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon']}
-		bc.update_bucket(bucket_uuid=uuid, **form_data)
-		bc.export_instances(load=True)
-		return redirect(url_for('show_bucket', uuid=uuid))
-	return render_template('/buckets/edit_bucket.html', title='Edit Bucket', form=form,
+    """
+    Edit a bucket.
+    
+    Login is required to view this page.
+    
+    Params
+    ------
+		:param uuid: The unique identifier of the bucket.
+		:type uuid: str
+    
+    Returns
+    -------
+    	:return: Edit bucket page.
+    """
+    bucket = bc.retrieve(uuid)
+    form = BucketForm(obj=bucket)
+    if form.validate_on_submit():
+        form_data = {key: value for key, value in form.data.items() if key in ['name', 'goal', 'deadline', 'frequency', 'comment', 'icon']}
+        bc.update_bucket(bucket_uuid=uuid, **form_data)
+        bc.export_instances(load=True)
+        return redirect(url_for('show_bucket', uuid=uuid))
+    return render_template('/buckets/edit_bucket.html', title='Edit Bucket', form=form,
 						   user=current_user, bucket=bc.retrieve(uuid))
 
 @app.route('/buckets/<uuid>/delete', methods=['GET'])
 @login_required
 def delete_bucket(uuid):
-	bc.delete_bucket(uuid)
-	bc.export_instances(load=True)
-	return redirect(url_for('list_buckets'))
+    """
+    Delete a bucket.
+    
+    Login is required to view this page.
+    
+    Params
+    ------
+		:param uuid: The unique identifier of the bucket.
+		:type uuid: str
+    
+    Returns
+    -------
+    	:return: List buckets page.
+    """
+    bc.delete_bucket(uuid)
+    bc.export_instances(load=True)
+    return redirect(url_for('list_buckets'))
 
 @app.route('/create_allocation/<bucket_uuid>', methods=['GET', 'POST'])
 @login_required
 def create_allocation(bucket_uuid):
 	"""
 	Create a new allocation.
+
+	Login is required to view this page.
+
+	Params
+	------
+		:param bucket_uuid: The unique identifier of the bucket.
+		:type bucket_uuid: str
+
+	Returns
+	-------
+		:return: Create allocation page.
 	"""
 	bucket = bc.retrieve(bucket_uuid)
 	max_value = bucket.goal - bucket.current_amount
@@ -206,6 +281,20 @@ def create_allocation(bucket_uuid):
 @app.route('/delete_allocation/<uuid>', methods=['GET'])
 @login_required
 def delete_allocation(uuid):
+    """
+    Delete an allocation.
+    
+    Login is required to view this page.
+    
+    Params
+    ------
+		:param uuid: The unique identifier of the allocation.
+		:type uuid: str
+    
+    Returns
+    -------
+    	:return: Show bucket page.
+    """
     allocation = ac.retrieve(uuid)
     allocations = ac.retrieve_allocations_by_bucket(allocation.target_uuid)
     ac.delete_allocation(uuid)
@@ -218,6 +307,20 @@ def delete_allocation(uuid):
 @app.route('/edit_allocation/<uuid>', methods=['GET', 'POST'])
 @login_required
 def edit_allocation(uuid):
+	"""
+	Edit an allocation.
+
+	Login is required to view this page.
+
+	Params
+	------
+		:param uuid: The unique identifier of the allocation.
+		:type uuid: str
+
+	Returns
+	-------
+		:return: Edit allocation page.
+	"""
 	allocation = ac.retrieve(uuid)
 	bucket = bc.retrieve(allocation.target_uuid)
 	max_value = bucket.goal - bucket.current_amount + allocation.amount
@@ -238,6 +341,15 @@ def edit_allocation(uuid):
 @app.route('/index_income', methods=['GET'])
 @login_required
 def list_incomes():
+	"""
+	List all incomes.
+	
+	Login is required to view this page.
+	
+	Returns
+	-------
+		:return: List incomes page.
+	"""
 	for income in ic.list_incomes(current_user.get_id()):
 		print(income.__dict__)
 	return render_template('/transactions/incomes/index_income.html', title='List Incomes',
@@ -250,6 +362,12 @@ def list_incomes():
 def create_income():
 	"""
 	Create a new income.
+
+	Login is required to view this page.
+
+	Returns
+	-------
+		:return: Create income page.
 	"""
 	form = IncomeForm()
 	if form.validate_on_submit():
@@ -264,6 +382,20 @@ def create_income():
 @app.route('/show_income/<uuid>', methods=['GET', 'POST'])
 @login_required
 def show_income(uuid):
+	"""
+    Show an income.
+	
+	Login is required to view this page.
+	
+	Params
+	------
+		:param uuid: The unique identifier of the income.
+		:type uuid: str
+	
+	Returns
+	-------
+		:return: Show income page.
+	"""
 	income = ic.retrieve(uuid)
 	return render_template('/transactions/incomes/show_income.html', title='Show Income',
 						   user=current_user, income=income)
@@ -271,6 +403,20 @@ def show_income(uuid):
 @app.route('/edit_income/<uuid>', methods=['GET', 'POST'])
 @login_required
 def edit_income(uuid):
+	"""
+    Edit an income.
+	
+	Login is required to view this page.
+	
+	Params
+	------
+		:param uuid: The unique identifier of the income.
+		:type uuid: str
+	
+	Returns
+	-------
+		:return: Edit income page.
+	"""
 	income = ic.retrieve(uuid)
 	form = IncomeForm(obj=income)
 	if form.validate_on_submit():
@@ -285,6 +431,20 @@ def edit_income(uuid):
 @app.route('/delete_income/<uuid>', methods=['GET'])
 @login_required
 def delete_income(uuid):
+	"""
+	Delete an income.
+	
+	Login is required to view this page.
+	
+	Params
+	------
+		:param uuid: The unique identifier of the income.
+		:type uuid: str
+	
+	Returns
+	-------
+		:return: List incomes page.
+	"""
 	ic.delete_income(uuid)
 	ic.export_instances(load=True)
 	return redirect(url_for('list_incomes'))

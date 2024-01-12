@@ -49,8 +49,7 @@
 	{% else %}
 	<p>No buckets found.</p>
 	{% endif %}
-
-	<a href="{{ url_for('create_bucket') }}">Create a new bucket</a>
+	<button type="button" onclick="location.href='{{ url_for('create_bucket') }}'">Create a new bucket</button>
 </body>
 
 </html>

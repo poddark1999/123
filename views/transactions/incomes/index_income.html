@@ -22,7 +22,7 @@
 {% if incomes %}
 <div class="card">
     {% for income in incomes %}
-    <div class="income-card">
+    <div class="bucket-card">
         <h2>{{ income.source }}</h2>
         <p><i class="far fa-calendar-alt"></i> Start Date: {{ income.start_date |format_date }}</p>
         <p><i class="far fa-calendar-alt"></i> End Date: {{ income.end_date |format_date }}</p>
@@ -36,7 +36,7 @@
 <p>No incomes found.</p>
 {% endif %}
 
-<a href="{{ url_for('create_income') }}">Create a new income</a>
+<button type="button" onclick="location.href='{{ url_for('create_income') }}'">Create a new income</button>
 </body>
 
 </html>

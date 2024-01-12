@@ -1,4 +1,3 @@
-from models.model import Model
 from models.user import User, is_strong
 from controllers.model_controller import ModelController
 
