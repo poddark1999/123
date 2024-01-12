@@ -17,7 +17,7 @@
 	</nav>
 	<div class="card">
 		<h1>{{ income.source }}</h1>
-		<p>Goal: {{ income.currency }} {{ income.amount|int|format_thousands }}</p>
+		<p>Income: {{ income.currency }} {{ income.amount|int|format_thousands }}</p>
 		<p>Start date: {{ income.start_date |format_date}}</p>
         <p>End date: {{ income.end_date |format_date}}</p>
         <p>Frequency: {{ income.frequency }}</p>

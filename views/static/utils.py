@@ -81,7 +81,7 @@ def format_comment(value):
 	return value or '-'
 
 def free_money_calculation(user, allocations, next_income):
-    """
+	"""
     Calculate the free money of a user.
     Params
     ------
@@ -97,14 +97,16 @@ def free_money_calculation(user, allocations, next_income):
 		:return: Free money of the user.
 		:rtype: float
    	"""
-    free_money = float(user.balance)
-    for allocation in allocations:
-        free_money -= allocation.amount
-    while next_income.start_date < datetime.now():
-        next_income.start_date += Bucket.valid_frequencies[next_income.frequency]
-    if (next_income.start_date - datetime.now()).days:
-        free_money /= (next_income.start_date - datetime.now()).days
-    return round(free_money, 2)
+	free_money = float(user.balance)
+	for allocation in allocations:
+		free_money -= allocation.amount
+	if not next_income:
+		return round(free_money/30,2)
+	while next_income.start_date < datetime.now():
+		next_income.start_date += Bucket.valid_frequencies[next_income.frequency]
+	if (next_income.start_date - datetime.now()).days:
+		free_money /= (next_income.start_date - datetime.now()).days
+	return round(free_money, 2)
 
 if __name__ == '__main__':
 	print(convert(100, 'CHF', 'USD'))
